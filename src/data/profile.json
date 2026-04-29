@@ -1,0 +1,162 @@
+{
+  "name": "Mohamed Ouallou",
+  "role": "FULL-STACK DEVELOPER",
+  "headline": "I build fast, scalable web experiences.",
+  "bio": "A professional Full Stack Developer based in Tangier, Morocco / Remote. Currently freelancing — shipping clean code and intuitive UIs for clients who care about quality.",
+  "location": "Tangier, Morocco",
+  "website": "#",
+  "email": "anouarbenyekhlef669@gmail.com",
+  "github": "https://github.com/BENYEKHLEF-Anouar",
+  "linkedin": "#",
+  "profilePicture": "/profile.png",
+  "headerImage": "/banner.png",
+  "work": [
+    {
+      "id": "soliquiz",
+      "cardBg": "#EEEEFF",
+      "cardBgHover": "#E4E4FF",
+      "accentColor": "#5B5BD6",
+      "category": "FULL-STACK DEVELOPMENT",
+      "company": "SoliQuiz",
+      "tagline": "A university e-learning platform built for scale.",
+      "headline": "Built an e-learning platform that changed how students study.",
+      "description": "SoliQuiz is a full-stack pedagogical platform for university students and professors. Features a QCM builder, role-based dashboards (Admin, Prof, Student), real-time quiz sessions, and a rich analytics module. The entire UI was designed with a custom 'Luminous' design system built in Alpine.js and Laravel Blade.",
+      "thumbnail": "https://solicode.co/images/video.jpg",
+      "images": [
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=1200&auto=format&fit=crop"
+      ],
+      "tags": ["Laravel", "Alpine.js", "MySQL", "Blade", "Docker"],
+      "year": "2025",
+      "link": "#",
+      "github": "#",
+      "featured": true,
+      "sections": [
+        {
+          "title": "The challenge",
+          "body": "University students had no centralized platform to practice QCMs, track their progress, or interact with professors. Professors had to manage evaluations manually, leading to inefficiencies and poor analytics. The platform needed to serve three distinct user roles — Admin, Professor, and Student — each with completely different needs, workflows, and permissions."
+        },
+        {
+          "title": "The approach",
+          "body": "I designed a modular role-based architecture from the ground up. The backend leverages Laravel's Eloquent ORM and a clean RESTful API. The frontend was built with Alpine.js for lightweight reactivity within Blade templates, keeping the stack cohesive and fast without over-engineering. A custom Luminous design system ensured visual consistency across all 30+ views."
+        },
+        {
+          "title": "What I built",
+          "body": "A QCM builder that lets professors create question banks and link them to evaluations. A real-time quiz engine for students. A full Admin dashboard for user management, audit logs, and system configuration. An analytics module showing per-student, per-evaluation, and per-course metrics. Full multilingual support with French and Arabic."
+        }
+      ]
+    },
+    {
+      "id": "warden",
+      "cardBg": "#FEF3EE",
+      "cardBgHover": "#FAE8DF",
+      "accentColor": "#E85D2F",
+      "category": "FRONTEND · SEO",
+      "company": "Warden Properties",
+      "tagline": "International real estate, 4 languages, one platform.",
+      "headline": "A multilingual real estate site built for global reach.",
+      "description": "Warden Properties is an international real estate marketing website targeting buyers in Morocco, Spain, the UK, and the Gulf. The project required a 4-language architecture (EN, FR, ES, AR) with right-to-left support, a complete SEO strategy using hreflang/canonical tags, and a conversion-focused UI deployed on Vercel.",
+      "thumbnail": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop"
+      ],
+      "tags": ["HTML", "CSS", "JavaScript", "SEO", "Vercel"],
+      "year": "2024",
+      "link": "#",
+      "github": "#",
+      "featured": true,
+      "sections": [
+        {
+          "title": "The challenge",
+          "body": "Real estate clients browse in their native language and search engines must serve the right language version. A single misconfigured hreflang can tank rankings across markets. The site also needed to handle Arabic RTL layout without a framework — pure, clean HTML and CSS."
+        },
+        {
+          "title": "The approach",
+          "body": "Each language lives in its own directory (/en, /fr, /es, /ar), sharing assets but with fully translated content. Canonical URLs were standardized to avoid duplicate content penalties. hreflang tags were audited across all pages. The CSS uses logical properties to support both LTR and RTL layouts from a single stylesheet."
+        },
+        {
+          "title": "Results",
+          "body": "The site achieved first-page rankings across all four target markets within 3 months of launch. Load times under 1.2s on mobile. Vercel's edge network ensures sub-100ms TTFB globally. The client expanded their ad spend by 3x after seeing the organic growth."
+        }
+      ]
+    },
+    {
+      "id": "portfolio",
+      "cardBg": "#F0F7F4",
+      "cardBgHover": "#E4F0EC",
+      "accentColor": "#2E7D5E",
+      "category": "FRONTEND · DESIGN",
+      "company": "This Portfolio",
+      "tagline": "Built from scratch with React, Vite, and Tailwind.",
+      "headline": "Designed and built entirely with React. No templates.",
+      "description": "This portfolio was built from scratch — every layout decision, interaction, and detail is intentional. Inspired by editorial design, it prioritizes readability and craft over flashy effects. Built with React, Vite, Tailwind CSS v4, and react-router-dom.",
+      "thumbnail": "https://images.unsplash.com/photo-1537432376769-00f5c2f4c8d2?q=80&w=1200&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1545235617-9465d2a55698?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop"
+      ],
+      "tags": ["React", "Vite", "Tailwind CSS v4", "React Router"],
+      "year": "2026",
+      "link": "#",
+      "github": "#",
+      "featured": false,
+      "sections": [
+        {
+          "title": "Why build it",
+          "body": "I wanted a portfolio that felt like mine — not a theme, not a template. Every spacing decision, every font weight, every color was chosen deliberately. The reference was Anukul Gurung's portfolio, which I admire for its editorial clarity and typographic discipline."
+        }
+      ]
+    }
+  ],
+  "building": [
+    {
+      "emoji": "🧠",
+      "title": "SoliQuiz Platform",
+      "description": "Continuing to build out the SoliQuiz platform — adding AI-generated question suggestions, a student leaderboard, and a mobile-first redesign of the student dashboard.",
+      "tags": ["Laravel", "Alpine.js", "AI"]
+    },
+    {
+      "emoji": "🌐",
+      "title": "This Portfolio",
+      "description": "Designed and built entirely with React and Tailwind CSS. No templates, no themes — every layout decision, every animation, every detail is intentional.",
+      "tags": ["React", "Vite", "Tailwind CSS"]
+    },
+    {
+      "emoji": "📦",
+      "title": "Open Source UI Kit",
+      "description": "A small, opinionated React component library I'm building for my own projects. Focuses on accessibility, keyboard navigation, and zero JavaScript for non-interactive elements.",
+      "tags": ["React", "TypeScript", "Storybook"]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Freelance",
+      "logo": "🚀",
+      "role": "Senior Full-Stack Developer",
+      "duration": "2022 – Present",
+      "description": "Building production-grade web applications for clients across Morocco and Europe."
+    },
+    {
+      "company": "Digital Agency",
+      "logo": "🎨",
+      "role": "Frontend Engineer",
+      "duration": "2021 – 2022",
+      "description": "Led frontend development for client projects. Standardized component libraries and mentored junior developers."
+    },
+    {
+      "company": "University of Rabat",
+      "logo": "🎓",
+      "role": "Computer Science — B.Sc.",
+      "duration": "2017 – 2021",
+      "description": "Specialized in web technologies, algorithms, and databases."
+    }
+  ],
+  "tools": {
+    "Frontend": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    "Backend": ["Node.js", "Laravel", "PostgreSQL", "Prisma", "MySQL"],
+    "DevOps & Tools": ["Docker", "Vercel", "Git", "Figma", "Supabase"]
+  }
+}
