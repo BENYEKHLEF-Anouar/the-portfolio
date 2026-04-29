@@ -21,7 +21,7 @@ const Navbar = () => {
           left: 0,
           right: 0,
           zIndex: 1000,
-          backgroundColor: '#FAFAFA',
+          backgroundColor: '#FFFFFF',
           backdropFilter: 'none',
           WebkitBackdropFilter: 'none',
           borderBottom: '1px solid #EAEAEA',
@@ -64,9 +64,10 @@ const Navbar = () => {
         <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           {[
             { label: 'About', to: '/about' },
-            { label: 'Work', to: '/work' },
-            { label: 'Building', to: '/building' },
-            { label: 'Contact', to: '/contact' },
+            { label: 'Work', to: '/#work' },
+            { label: 'Stack', to: '/#stack' },
+            { label: 'Experience', to: '/#experience' },
+            { label: 'Contact', to: '/#contact' },
           ].map(({ label, to }) => (
             <Link
               key={label}

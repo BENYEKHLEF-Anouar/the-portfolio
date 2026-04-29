@@ -1,18 +1,25 @@
 import React from 'react';
+import data from '../data/profile.json';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer style={{ paddingBottom: 64 }}>
+    <footer className="footer">
       <div className="page-container-wide">
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          fontSize: '0.75rem',
-          color: 'var(--color-ink-3)',
-        }}>
-          <span>© {new Date().getFullYear()} Anouar Benyekhlef</span>
-          <span>Built with Love</span>
+        <div className="footer-bottom">
+          <span className="footer-copy">
+            © {currentYear} {data.name}. All rights reserved.
+          </span>
+          
+          <div className="footer-meta">
+            <div className="footer-status">
+              Available for new projects
+            </div>
+            <div className="footer-meta-item">
+              Tangier, Morocco
+            </div>
+          </div>
         </div>
       </div>
     </footer>

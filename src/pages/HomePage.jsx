@@ -1,7 +1,9 @@
 import { 
   MapPin, Terminal, Sun, Wind, Triangle, Code, ArrowUpRight, 
-  Layers, Layout, Database, Server, PenTool, BarChart 
+  Layers, Layout, Database, Server, PenTool, BarChart,
+  Briefcase, GraduationCap, Rocket, Star
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import ContactCTA from '../components/ContactCTA.jsx';
 import data from '../data/profile.json';
 import { Link } from 'react-router-dom';
@@ -12,7 +14,6 @@ const HomePage = () => {
   const [currentTime, setCurrentTime] = useState('');
 
   useEffect(() => {
-    // Get current time
     const updateTime = () => {
       const now = new Date();
       setCurrentTime(now.toLocaleTimeString('en-US', {
@@ -24,7 +25,6 @@ const HomePage = () => {
     updateTime();
     const timeInterval = setInterval(updateTime, 60000);
 
-    // Helper to convert weather code to condition
     const getWeatherCondition = (code) => {
       if (code === 0) return 'Clear Sky';
       if (code === 1) return 'Mainly Clear';
@@ -36,15 +36,12 @@ const HomePage = () => {
       return 'Sunny';
     };
 
-    // Fetch weather for Tangier using Open-Meteo (free, no API key needed)
     const fetchWeather = async () => {
       try {
         const response = await fetch(
           `https://api.open-meteo.com/v1/forecast?latitude=35.7595&longitude=-5.8340&current_weather=true`
         );
         const data = await response.json();
-        console.log('Weather API response:', data);
-
         if (data.current_weather) {
           const weatherCode = data.current_weather.weathercode;
           const condition = getWeatherCondition(weatherCode);
@@ -56,19 +53,33 @@ const HomePage = () => {
           setWeather({ temp: 24, condition: 'Sunny' });
         }
       } catch (error) {
-        console.error('Weather fetch failed:', error);
         setWeather({ temp: 24, condition: 'Sunny' });
       }
     };
 
     fetchWeather();
-
     return () => clearInterval(timeInterval);
   }, []);
+
+  const revealVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  };
+
   return (
     <div style={{ paddingTop: 10 }}>
       {/* ── Hero Section ──────────────────────────────── */}
-      <section style={{ padding: '50px 0 100px' }}>
+      <motion.section 
+        style={{ padding: '50px 0 100px' }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={revealVariants}
+      >
         <div className="page-container-wide">
           <div style={{
             display: 'flex',
@@ -77,8 +88,7 @@ const HomePage = () => {
             justifyContent: 'center',
             flexWrap: 'wrap',
           }}>
-            {/* Left — photo */}
-            <div
+            <motion.div
               style={{
                 width: 220,
                 height: 270,
@@ -86,17 +96,17 @@ const HomePage = () => {
                 overflow: 'hidden',
                 flexShrink: 0,
               }}
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <img
                 src={data.profilePicture}
                 alt={data.name}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
-            </div>
+            </motion.div>
 
-            {/* Right — content */}
             <div style={{ paddingTop: 0, minWidth: 320 }}>
-              {/* Role label */}
               <p style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontSize: '14px',
@@ -108,7 +118,6 @@ const HomePage = () => {
                 {data.role}
               </p>
 
-              {/* Headline */}
               <h1 style={{
                 fontSize: 'clamp(3rem, 5.5vw, 4.5rem)',
                 fontWeight: 400,
@@ -121,7 +130,6 @@ const HomePage = () => {
                 I build fast, scalable<br />web experiences<span style={{ color: '#E85D2F' }}>.</span>
               </h1>
 
-              {/* Bio */}
               <p style={{
                 fontSize: '1.0625rem',
                 lineHeight: 1.5,
@@ -132,7 +140,6 @@ const HomePage = () => {
                 {data.bio}<span className="cursor-blink" style={{ color: '#E85D2F', fontWeight: 500 }}>|</span>
               </p>
 
-              {/* Location with Weather Widget */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -142,9 +149,6 @@ const HomePage = () => {
                 position: 'relative',
               }} className="location-weather-wrapper">
                 <MapPin size={14} strokeWidth={1.5} />
-                {/* <span className="location-text" style={{ borderBottom: '2px dotted #B8B8AD', paddingBottom: '3px', cursor: 'pointer' }}>
-                  {data.location}
-                </span> */}
                 <span className="location-text" style={{
                   backgroundImage: 'linear-gradient(to right, #C5C5BA 50%, transparent 50%)',
                   backgroundPosition: '0 100%',
@@ -156,7 +160,6 @@ const HomePage = () => {
                   {data.location}
                 </span>
 
-                {/* Weather Widget Popup */}
                 <div className="weather-widget" style={{
                   position: 'absolute',
                   left: 0,
@@ -214,10 +217,17 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* ── Selected Work ───────────────────────────── */}
-      <section style={{ padding: '24px 0 100px' }}>
+      <motion.section 
+        id="work" 
+        style={{ padding: '24px 0 100px' }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={revealVariants}
+      >
         <div className="page-container-wide">
           <h2 style={{
             fontSize: '1.5rem',
@@ -229,7 +239,6 @@ const HomePage = () => {
             Selected work
           </h2>
 
-          {/* Asymmetric 2-column grid — alternates wide/narrow each row */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {(() => {
               const projects = data.work;
@@ -249,45 +258,47 @@ const HomePage = () => {
                       };
 
                       return (
-                        <Link 
-                          key={project.id} 
-                          to={`/work/${project.id}`} 
-                          style={{ textDecoration: 'none' }}
+                        <motion.div
+                          key={project.id}
+                          whileHover={{ y: -5 }}
+                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                         >
-                          <div
-                            className={`work-card-v2 ${pair.length === 1 ? 'wc-full-width' : ''}`}
-                            style={{ 
-                              '--card-bg-hover': project.cardBgHover 
-                            }}
+                          <Link 
+                            to={`/work/${project.id}`} 
+                            style={{ textDecoration: 'none' }}
                           >
-                            <div className="wc-arrow">
-                              <ArrowUpRight size={18} strokeWidth={1} />
-                            </div>
-
-                            {/* Header */}
-                            <div className="wc-header">
-                              <div className="wc-meta">
-                                <span className="wc-category">{project.category}</span>
-                                <span className="wc-sep">·</span>
-                                <span className="wc-company">{project.company}</span>
+                            <div
+                              className={`work-card-v2 ${pair.length === 1 ? 'wc-full-width' : ''}`}
+                              style={{ 
+                                '--card-bg-hover': project.cardBgHover 
+                              }}
+                            >
+                              <div className="wc-arrow">
+                                <ArrowUpRight size={18} strokeWidth={1} />
                               </div>
-                            </div>
 
-                            {/* Headline */}
-                            <h3 className="wc-headline">{project.headline}</h3>
-
-                            {/* Cascading images */}
-                            {imgCount > 0 && (
-                              <div className="wc-images">
-                                {project.images.map((src, idx) => (
-                                  <div key={idx} className={imgClass(idx)}>
-                                    <img src={src} alt={`${project.company} screenshot ${idx + 1}`} />
-                                  </div>
-                                ))}
+                              <div className="wc-header">
+                                <div className="wc-meta">
+                                  <span className="wc-category">{project.category}</span>
+                                  <span className="wc-sep">·</span>
+                                  <span className="wc-company">{project.company}</span>
+                                </div>
                               </div>
-                            )}
-                          </div>
-                        </Link>
+
+                              <h3 className="wc-headline">{project.headline}</h3>
+
+                              {imgCount > 0 && (
+                                <div className="wc-images">
+                                  {project.images.map((src, idx) => (
+                                    <div key={idx} className={imgClass(idx)}>
+                                      <img src={src} alt={`${project.company} screenshot ${idx + 1}`} />
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </Link>
+                        </motion.div>
                       );
                     })}
                   </div>
@@ -297,14 +308,20 @@ const HomePage = () => {
             })()}
           </div>
         </div>
-      </section>
+      </motion.section>
 
 
       {/* ── Stack (Spec Sheet Style) ──────────────────────── */}
-      <section className="stack-section">
+      <motion.section 
+        id="stack" 
+        className="stack-section"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={revealVariants}
+      >
         <div className="page-container-wide">
           <div className="stack-layout">
-            {/* Header */}
             <div className="stack-header">
               <h2 className="stack-title">Stack</h2>
               <p className="stack-subtitle">Tools I reach for every day.</p>
@@ -313,116 +330,106 @@ const HomePage = () => {
               </p>
             </div>
 
-            {/* Spec List */}
             <div className="stack-spec-list">
-              {/* Row 1 */}
-              <div className="stack-row">
-                <div className="stack-row-lead">
-                  <span className="stack-num">01</span>
-                  <Layers size={24} strokeWidth={1.5} />
-                </div>
-                <div className="stack-row-content">
-                  <h3 className="stack-row-title">Main Frameworks</h3>
-                  <p className="stack-row-desc">The backbone of my application architecture.</p>
-                </div>
-                <div className="stack-row-tools">
-                  <span className="stack-pill">React</span>
-                  <span className="stack-pill">Next.js</span>
-                  <span className="stack-pill">Laravel</span>
-                </div>
-              </div>
-
-              {/* Row 2 */}
-              <div className="stack-row">
-                <div className="stack-row-lead">
-                  <span className="stack-num">02</span>
-                  <Layout size={24} strokeWidth={1.5} />
-                </div>
-                <div className="stack-row-content">
-                  <h3 className="stack-row-title">Frontend & UI</h3>
-                  <p className="stack-row-desc">Crafting fluid, responsive, and accessible interfaces.</p>
-                </div>
-                <div className="stack-row-tools">
-                  <span className="stack-pill">TypeScript</span>
-                  <span className="stack-pill">Tailwind CSS</span>
-                  <span className="stack-pill">Framer Motion</span>
-                  <span className="stack-pill">Alpine.js</span>
-                </div>
-              </div>
-
-              {/* Row 3 */}
-              <div className="stack-row">
-                <div className="stack-row-lead">
-                  <span className="stack-num">03</span>
-                  <Database size={24} strokeWidth={1.5} />
-                </div>
-                <div className="stack-row-content">
-                  <h3 className="stack-row-title">Backend & Data</h3>
-                  <p className="stack-row-desc">Scalable server logic and optimized database schemas.</p>
-                </div>
-                <div className="stack-row-tools">
-                  <span className="stack-pill">Node.js</span>
-                  <span className="stack-pill">PostgreSQL</span>
-                  <span className="stack-pill">MySQL</span>
-                  <span className="stack-pill">Rest API</span>
-                </div>
-              </div>
-
-              {/* Row 4 */}
-              <div className="stack-row">
-                <div className="stack-row-lead">
-                  <span className="stack-num">04</span>
-                  <Server size={24} strokeWidth={1.5} />
-                </div>
-                <div className="stack-row-content">
-                  <h3 className="stack-row-title">Infrastructure</h3>
-                  <p className="stack-row-desc">Automated deployment pipelines and containerization.</p>
-                </div>
-                <div className="stack-row-tools">
-                  <span className="stack-pill">Docker</span>
-                  <span className="stack-pill">Vercel</span>
-                  <span className="stack-pill">GitHub Actions</span>
-                  <span className="stack-pill">Git</span>
-                </div>
-              </div>
-
-              {/* Row 5 */}
-              <div className="stack-row">
-                <div className="stack-row-lead">
-                  <span className="stack-num">05</span>
-                  <PenTool size={24} strokeWidth={1.5} />
-                </div>
-                <div className="stack-row-content">
-                  <h3 className="stack-row-title">Design & Planning</h3>
-                  <p className="stack-row-desc">Systems thinking from wireframes to final handoff.</p>
-                </div>
-                <div className="stack-row-tools">
-                  <span className="stack-pill">Figma</span>
-                  <span className="stack-pill">Notion</span>
-                </div>
-              </div>
-
-              {/* Row 6 */}
-              <div className="stack-row">
-                <div className="stack-row-lead">
-                  <span className="stack-num">06</span>
-                  <BarChart size={24} strokeWidth={1.5} />
-                </div>
-                <div className="stack-row-content">
-                  <h3 className="stack-row-title">Analytics</h3>
-                  <p className="stack-row-desc">Measuring performance and search visibility.</p>
-                </div>
-                <div className="stack-row-tools">
-                  <span className="stack-pill">Google Analytics</span>
-                  <span className="stack-pill">Google Search Console</span>
-                </div>
-              </div>
+              {[
+                { num: '01', icon: Layers, title: 'Main Frameworks', desc: 'The backbone of my application architecture.', tools: ['React', 'Next.js', 'Laravel'] },
+                { num: '02', icon: Layout, title: 'Frontend & UI', desc: 'Crafting fluid, responsive, and accessible interfaces.', tools: ['TypeScript', 'Tailwind CSS', 'Framer Motion', 'Alpine.js'] },
+                { num: '03', icon: Database, title: 'Backend & Data', desc: 'Scalable server logic and optimized database schemas.', tools: ['Node.js', 'PostgreSQL', 'MySQL', 'Rest API'] },
+                { num: '04', icon: Server, title: 'Infrastructure', desc: 'Automated deployment pipelines and containerization.', tools: ['Docker', 'Vercel', 'GitHub Actions', 'Git'] },
+                { num: '05', icon: PenTool, title: 'Design & Planning', desc: 'Systems thinking from wireframes to final handoff.', tools: ['Figma', 'Notion'] },
+                { num: '06', icon: BarChart, title: 'Analytics', desc: 'Measuring performance and search visibility.', tools: ['Google Analytics', 'Google Search Console'] }
+              ].map((row, i) => (
+                <motion.div 
+                  key={i} 
+                  className="stack-row"
+                  whileHover={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="stack-row-lead">
+                    <span className="stack-num">{row.num}</span>
+                    <row.icon size={24} strokeWidth={1.5} />
+                  </div>
+                  <div className="stack-row-content">
+                    <h3 className="stack-row-title">{row.title}</h3>
+                    <p className="stack-row-desc">{row.desc}</p>
+                  </div>
+                  <div className="stack-row-tools">
+                    {row.tools.map((tool, ti) => (
+                      <span key={ti} className="stack-pill">{tool}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <ContactCTA />
+      {/* ── Experience Timeline ──────────────────────────── */}
+      <motion.section 
+        id="experience" 
+        className="exp-section"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={revealVariants}
+      >
+        <div className="page-container-wide">
+          <div className="exp-header">
+            <p className="exp-eyebrow">Experience</p>
+            <h2 className="exp-title">Path so far.</h2>
+            <p className="exp-subtitle">
+              Roles and milestones that shaped how I build for users and teams.
+            </p>
+          </div>
+
+          <div className="exp-timeline">
+            <div className="exp-line" />
+            
+            {[
+              { side: 'right', icon: Rocket, date: '2025 — 2026', role: 'Mobile & Full-Stack Development Program', company: 'Solicode Tangier', desc: 'Immersive program focused on building cross-platform mobile apps and full-stack web systems — bridging product design with production-grade engineering.', tags: ['React Native', 'Flutter', 'Laravel'] },
+              { side: 'left', icon: Briefcase, date: 'July 2025 — Aug 2025', role: 'Software Development Intern', company: 'pragmatic minds GmbH', desc: 'Contributed to real-world client projects within a German software consultancy — shipping features for production apps and working inside an agile team workflow.', tags: ['React', 'Node.js', 'Agile'] },
+              { side: 'right', icon: Star, date: '2024 — 2025', role: 'Full-Stack Web Development Program', company: 'Solicode Tangier', desc: 'Completed an intensive full-stack curriculum — from database architecture and REST API design through to polished React front-ends and CI/CD deployment pipelines.', tags: ['Next.js', 'PostgreSQL', 'Docker'] },
+              { side: 'left', icon: GraduationCap, date: '2023 — 2024', role: 'Baccalauréat in Physics-Chemistry', company: 'Anoual High School', desc: 'Graduated with a scientific baccalauréat — a foundation that instilled analytical thinking and systematic problem-solving, skills I now apply daily in software engineering.', tags: ['Physics', 'Mathematics', 'Chemistry'] }
+            ].map((entry, i) => (
+              <motion.div 
+                key={i} 
+                className={`exp-entry exp-entry--${entry.side}`}
+                initial={{ opacity: 0, x: entry.side === 'right' ? 20 : -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+              >
+                <div className="exp-node">
+                  <entry.icon size={14} strokeWidth={2} />
+                </div>
+                <div className="exp-card">
+                  <span className="exp-date">{entry.date}</span>
+                  <h3 className="exp-role">{entry.role}</h3>
+                  <p className="exp-company">{entry.company}</p>
+                  <p className="exp-desc">{entry.desc}</p>
+                  <div className="exp-tags">
+                    {entry.tags.map((tag, ti) => (
+                      <span key={ti} className="exp-tag">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={revealVariants}
+      >
+        <ContactCTA />
+      </motion.div>
+
+      <div style={{ height: '2rem' }} />
     </div>
   );
 };
