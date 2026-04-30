@@ -3,6 +3,7 @@
   "role": "FULL-STACK DEVELOPER",
   "headline": "I build fast, scalable web experiences.",
   "bio": "A professional Full Stack Developer based in Tangier, Morocco / Remote. Currently freelancing — shipping clean code and intuitive UIs for clients who care about quality.",
+  "aboutBio": "Dedicated and results-oriented Full Stack Developer with experience in Laravel and React for modern web application development. Creative thinker passionate about continuous improvement and end-to-end delivery.\n\nComfortable in agile environments (Scrum), with professional experience at Monzed (an AI systems integrator specialized in custom solutions). I'm drawn to projects where engineering is a competitive advantage and where people think, build, and ship together.\n\nSeeking opportunities to leverage my skills in an innovative Moroccan company, bringing both technical depth and a focus on collaborative problem-solving.",
   "location": "Tangier, Morocco",
   "website": "#",
   "email": "anouarbenyekhlef669@gmail.com",
@@ -12,37 +13,32 @@
   "headerImage": "/banner.png",
   "work": [
     {
-      "id": "soliquiz",
+      "id": "orbit",
       "cardBg": "#EEEEFF",
       "cardBgHover": "#E4E4FF",
       "accentColor": "#5B5BD6",
-      "category": "FULL-STACK DEVELOPMENT",
-      "company": "SoliQuiz",
-      "tagline": "A university e-learning platform built for scale.",
-      "headline": "Built an e-learning platform that changed how students study.",
-      "description": "SoliQuiz is a full-stack pedagogical platform for university students and professors. Features a QCM builder, role-based dashboards (Admin, Prof, Student), real-time quiz sessions, and a rich analytics module. The entire UI was designed with a custom 'Luminous' design system built in Alpine.js and Laravel Blade.",
-      "thumbnail": "https://solicode.co/images/video.jpg",
-      "images": [
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=1200&auto=format&fit=crop"
-      ],
-      "tags": ["Laravel", "Alpine.js", "MySQL", "Blade", "Docker"],
-      "year": "2025",
+      "category": "AI WEB APP",
+      "company": "Monzed OÜ",
+      "companyLink": "https://monzed.com/",
+      "tagline": "AI-assisted code generation web application.",
+      "headline": "Orbit: Powered by Gemini API and Supabase.",
+      "description": "React/Vite app with AI generation via Gemini API / Auth + project management with Supabase, responsive Tailwind UI. Designed a modern, responsive, and immersive UI with Tailwind CSS and a spatial visual theme.",
+      "thumbnail": "/orbit1.png",
+      "images": ["/orbit1.png"],
+      "detailImages": ["/orbit2.png", "/orbit3.png", "/orbit4.png"],
+      "tags": ["React", "Vite", "Supabase", "Gemini API", "Tailwind CSS"],
+      "year": "July – August 2025",
       "link": "#",
-      "github": "#",
+      "github": "https://github.com/BENYEKHLEF-Anouar/Orbit",
       "featured": true,
       "sections": [
         {
-          "title": "The challenge",
-          "body": "University students had no centralized platform to practice QCMs, track their progress, or interact with professors. Professors had to manage evaluations manually, leading to inefficiencies and poor analytics. The platform needed to serve three distinct user roles — Admin, Professor, and Student — each with completely different needs, workflows, and permissions."
+          "title": "Context",
+          "body": "Designed and developed a modern web application using React and Vite for AI-assisted code generation (Orbit) during my internship at Monzed OÜ."
         },
         {
-          "title": "The approach",
-          "body": "I designed a modular role-based architecture from the ground up. The backend leverages Laravel's Eloquent ORM and a clean RESTful API. The frontend was built with Alpine.js for lightweight reactivity within Blade templates, keeping the stack cohesive and fast without over-engineering. A custom Luminous design system ensured visual consistency across all 30+ views."
-        },
-        {
-          "title": "What I built",
-          "body": "A QCM builder that lets professors create question banks and link them to evaluations. A real-time quiz engine for students. A full Admin dashboard for user management, audit logs, and system configuration. An analytics module showing per-student, per-evaluation, and per-course metrics. Full multilingual support with French and Arabic."
+          "title": "Technologies",
+          "body": "Integrated Gemini API and Supabase for authentication, project management, and real-time content generation. Immersive UI with Tailwind CSS."
         }
       ]
     },
@@ -114,9 +110,9 @@
   "building": [
     {
       "emoji": "🧠",
-      "title": "SoliQuiz Platform",
-      "description": "Continuing to build out the SoliQuiz platform — adding AI-generated question suggestions, a student leaderboard, and a mobile-first redesign of the student dashboard.",
-      "tags": ["Laravel", "Alpine.js", "AI"]
+      "title": "Orbit AI",
+      "description": "Continuing to build out Orbit — adding new Gemini API features, improved context management, and deeper Supabase integrations.",
+      "tags": ["React", "Supabase", "Gemini API"]
     },
     {
       "emoji": "🌐",
@@ -133,30 +129,31 @@
   ],
   "experience": [
     {
-      "company": "Freelance",
-      "logo": "🚀",
-      "role": "Senior Full-Stack Developer",
-      "duration": "2022 – Present",
-      "description": "Building production-grade web applications for clients across Morocco and Europe."
+      "company": "Monzed OÜ",
+      "logo": "/monzed.png",
+      "role": "Remote Full Stack Developer Intern",
+      "duration": "July – August 2025",
+      "location": "Tallinn, Estonia",
+      "description": "Designed and developed a modern web application using React and Vite for AI-assisted code generation (Orbit). Integrated Gemini API and Supabase."
     },
     {
-      "company": "Digital Agency",
-      "logo": "🎨",
-      "role": "Frontend Engineer",
-      "duration": "2021 – 2022",
-      "description": "Led frontend development for client projects. Standardized component libraries and mentored junior developers."
-    },
-    {
-      "company": "University of Rabat",
-      "logo": "🎓",
-      "role": "Computer Science — B.Sc.",
-      "duration": "2017 – 2021",
-      "description": "Specialized in web technologies, algorithms, and databases."
+      "company": "Solicode",
+      "logo": "/solicode2.jfif",
+      "role": "Full-Stack Web Development",
+      "duration": "2024 – 2026",
+      "description": "Intensive web development training covering PHP, Laravel, React, and agile methodologies."
     }
   ],
   "tools": {
-    "Frontend": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    "Backend": ["Node.js", "Laravel", "PostgreSQL", "Prisma", "MySQL"],
-    "DevOps & Tools": ["Docker", "Vercel", "Git", "Figma", "Supabase"]
-  }
+    "Frontend": ["React", "JavaScript", "Tailwind CSS", "Alpine.js", "Figma", "Next.js", "TypeScript", "Framer Motion"],
+    "Backend": ["Laravel", "PHP", "Node.js", "PostgreSQL", "Prisma", "MySQL"],
+    "Mobile": ["Kotlin", "Native"],
+    "Database & Analysis": ["Merise", "UML", "Mermaid"],
+    "Tools": ["Git", "Git Flow", "Docker", "Vercel", "Figma", "Supabase"]
+  },
+  "languages": [
+    { "name": "Arabic", "level": "Native" },
+    { "name": "French", "level": "Intermediate" },
+    { "name": "English", "level": "Advanced" }
+  ]
 }

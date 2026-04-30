@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Volume2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import data from '../data/profile.json';
+import ContactCTA from '../components/ContactCTA';
 
 const AboutPage = () => {
   const initialCards = [
@@ -36,8 +37,8 @@ const AboutPage = () => {
   return (
     <div className="about-page">
       {/* ── Close Button ──────────────────────────────── */}
-      <button 
-        onClick={() => navigate(-1)} 
+      <button
+        onClick={() => navigate(-1)}
         className="about-close-btn"
         style={{ background: 'none', border: 'none', cursor: 'pointer' }}
       >
@@ -66,34 +67,21 @@ const AboutPage = () => {
             </motion.div>
 
             <motion.div className="about-bio" variants={fadeInUp}>
-              <p>
-                I grew up in Rabat, Morocco and went to school in the heart of the city.
-                Over the past 4+ years I've helped build products and teams at various startups —
-                starting as a frontend dev and eventually building and shipping full-stack
-                products I'm proud of.
-              </p>
-              <p>
-                At SoliQuiz, I built the core pedagogical platform from scratch.
-                At Warden Properties, I helped scale the platform's reach across 4 international markets,
-                contributing to a 300% increase in lead generation through a robust SEO strategy.
-              </p>
-              <p>
-                I'm drawn to projects where engineering is a competitive advantage
-                and where people think, build, and ship together.
-              </p>
+              {data.aboutBio.split('\n\n').map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
             </motion.div>
 
-            {/* Experience List */}
-            <motion.div className="about-experience" variants={fadeInUp}>
-              <h2 className="footer-label">Selected Experience</h2>
-              <div className="exp-mini-list">
-                {data.experience.map((exp, i) => (
-                  <div key={i} className="exp-mini-item">
-                    <span className="exp-mini-year">{exp.duration.split(' – ')[0]}</span>
-                    <div className="exp-mini-details">
-                      <span className="exp-mini-company">{exp.company}</span>
-                      <span className="exp-mini-role">{exp.role}</span>
-                    </div>
+
+
+            {/* Languages Section */}
+            <motion.div className="about-languages" variants={fadeInUp} style={{ marginTop: '48px' }}>
+              <h2 className="footer-label">Languages</h2>
+              <div className="lang-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '32px', marginTop: '24px' }}>
+                {data.languages.map((lang, i) => (
+                  <div key={i} className="lang-item">
+                    <p style={{ fontSize: '0.9375rem', fontWeight: 500, color: '#111' }}>{lang.name}</p>
+                    <p style={{ fontSize: '0.8125rem', color: '#9A9A8E', marginTop: '4px' }}>{lang.level}</p>
                   </div>
                 ))}
               </div>
@@ -113,7 +101,7 @@ const AboutPage = () => {
             >
               {cards.map((card, index) => {
                 const isTop = index === 0;
-                
+
                 // Snappy reordering physics
                 const tossTransition = {
                   type: 'spring',
@@ -123,12 +111,12 @@ const AboutPage = () => {
                 };
 
                 const variants = {
-                  initial: { 
-                    rotate: card.rot, 
-                    x: 0, 
-                    y: 0, 
-                    scale: 0.9, 
-                    opacity: 0 
+                  initial: {
+                    rotate: card.rot,
+                    x: 0,
+                    y: 0,
+                    scale: 0.9,
+                    opacity: 0
                   },
                   animate: {
                     rotate: isTop ? card.rot : card.rot + (index * 2),
@@ -173,7 +161,7 @@ const AboutPage = () => {
                         moveToEnd(index);
                       }
                     }}
-                    whileDrag={{ 
+                    whileDrag={{
                       scale: 1.05,
                       rotate: 0,
                       zIndex: 100
@@ -192,6 +180,54 @@ const AboutPage = () => {
           </motion.div>
 
         </div>
+
+        {/* ── Full Width: Experience Section (Matched to Screenshot) ── */}
+        <motion.section 
+          className="about-experience-section"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="exp-sidebar">
+            <h2>Experience</h2>
+            <p>Practical application of engineering and design principles across diverse projects.</p>
+          </div>
+          
+          <div className="exp-main-list">
+            {data.experience.map((exp, i) => (
+              <div key={i} className="exp-row">
+                <div className={`exp-col-logo ${exp.company === 'Solicode' ? 'full-fill' : ''}`}>
+                  {exp.logo ? (
+                    <img src={exp.logo} alt={exp.company} />
+                  ) : (
+                    <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>🏢</div>
+                  )}
+                </div>
+                <div className="exp-col-info">
+                  <span className="exp-company-name">{exp.company}</span>
+                  <span className="exp-role-title">{exp.role}</span>
+                </div>
+                <div className="exp-col-year">
+                  {exp.duration}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.section>
+
+
+        {/* ── Contact Section ── */}
+        <motion.section 
+          className="about-contact-section"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{ paddingBottom: '0px' }}
+        >
+          <ContactCTA />
+        </motion.section>
       </div>
     </div>
   );

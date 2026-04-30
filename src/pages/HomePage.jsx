@@ -1,17 +1,21 @@
-import { 
-  MapPin, Terminal, Sun, Wind, Triangle, Code, ArrowUpRight, 
+import {
+  MapPin, Terminal, Sun, Wind, Triangle, Code, ArrowUpRight,
   Layers, Layout, Database, Server, PenTool, BarChart,
-  Briefcase, GraduationCap, Rocket, Star
+  Briefcase, GraduationCap, Rocket, Star, ArrowUp
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ContactCTA from '../components/ContactCTA.jsx';
 import data from '../data/profile.json';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+
+import Navbar from '../components/Navbar.jsx';
 
 const HomePage = () => {
   const [weather, setWeather] = useState(null);
   const [currentTime, setCurrentTime] = useState('');
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -58,22 +62,36 @@ const HomePage = () => {
     };
 
     fetchWeather();
-    return () => clearInterval(timeInterval);
+
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 600);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      clearInterval(timeInterval);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const revealVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
   return (
     <div style={{ paddingTop: 10 }}>
+      <Navbar />
       {/* ── Hero Section ──────────────────────────────── */}
-      <motion.section 
+      <motion.section
         style={{ padding: '50px 0 100px' }}
         initial="hidden"
         whileInView="visible"
@@ -92,7 +110,7 @@ const HomePage = () => {
               style={{
                 width: 220,
                 height: 270,
-                borderRadius: 18,
+                borderRadius: 15,
                 overflow: 'hidden',
                 flexShrink: 0,
               }}
@@ -102,7 +120,12 @@ const HomePage = () => {
               <img
                 src={data.profilePicture}
                 alt={data.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover',
+                  objectPosition: 'center 80%' 
+                }}
               />
             </motion.div>
 
@@ -220,8 +243,8 @@ const HomePage = () => {
       </motion.section>
 
       {/* ── Selected Work ───────────────────────────── */}
-      <motion.section 
-        id="work" 
+      <motion.section
+        id="work"
         style={{ padding: '24px 0 100px' }}
         initial="hidden"
         whileInView="visible"
@@ -246,7 +269,7 @@ const HomePage = () => {
               for (let i = 0; i < projects.length; i += 2) {
                 const pair = projects.slice(i, i + 2);
                 const gridTemplateColumns = pair.length === 1 ? '1fr' : (i % 4 === 0 ? '5fr 7fr' : '7fr 5fr');
-                
+
                 projectRows.push(
                   <div key={i} style={{ display: 'grid', gridTemplateColumns, gap: 16 }}>
                     {pair.map((project) => {
@@ -263,14 +286,14 @@ const HomePage = () => {
                           whileHover={{ y: -5 }}
                           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                         >
-                          <Link 
-                            to={`/work/${project.id}`} 
+                          <Link
+                            to={`/work/${project.id}`}
                             style={{ textDecoration: 'none' }}
                           >
                             <div
                               className={`work-card-v2 ${pair.length === 1 ? 'wc-full-width' : ''}`}
-                              style={{ 
-                                '--card-bg-hover': project.cardBgHover 
+                              style={{
+                                '--card-bg-hover': project.cardBgHover
                               }}
                             >
                               <div className="wc-arrow">
@@ -312,8 +335,8 @@ const HomePage = () => {
 
 
       {/* ── Stack (Spec Sheet Style) ──────────────────────── */}
-      <motion.section 
-        id="stack" 
+      <motion.section
+        id="stack"
         className="stack-section"
         initial="hidden"
         whileInView="visible"
@@ -339,8 +362,8 @@ const HomePage = () => {
                 { num: '05', icon: PenTool, title: 'Design & Planning', desc: 'Systems thinking from wireframes to final handoff.', tools: ['Figma', 'Notion'] },
                 { num: '06', icon: BarChart, title: 'Analytics', desc: 'Measuring performance and search visibility.', tools: ['Google Analytics', 'Google Search Console'] }
               ].map((row, i) => (
-                <motion.div 
-                  key={i} 
+                <motion.div
+                  key={i}
                   className="stack-row"
                   whileHover={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
                   transition={{ duration: 0.2 }}
@@ -366,8 +389,8 @@ const HomePage = () => {
       </motion.section>
 
       {/* ── Experience Timeline ──────────────────────────── */}
-      <motion.section 
-        id="experience" 
+      <motion.section
+        id="experience"
         className="exp-section"
         initial="hidden"
         whileInView="visible"
@@ -385,15 +408,15 @@ const HomePage = () => {
 
           <div className="exp-timeline">
             <div className="exp-line" />
-            
+
             {[
-              { side: 'right', icon: Rocket, date: '2025 — 2026', role: 'Mobile & Full-Stack Development Program', company: 'Solicode Tangier', desc: 'Immersive program focused on building cross-platform mobile apps and full-stack web systems — bridging product design with production-grade engineering.', tags: ['React Native', 'Flutter', 'Laravel'] },
-              { side: 'left', icon: Briefcase, date: 'July 2025 — Aug 2025', role: 'Software Development Intern', company: 'pragmatic minds GmbH', desc: 'Contributed to real-world client projects within a German software consultancy — shipping features for production apps and working inside an agile team workflow.', tags: ['React', 'Node.js', 'Agile'] },
-              { side: 'right', icon: Star, date: '2024 — 2025', role: 'Full-Stack Web Development Program', company: 'Solicode Tangier', desc: 'Completed an intensive full-stack curriculum — from database architecture and REST API design through to polished React front-ends and CI/CD deployment pipelines.', tags: ['Next.js', 'PostgreSQL', 'Docker'] },
-              { side: 'left', icon: GraduationCap, date: '2023 — 2024', role: 'Baccalauréat in Physics-Chemistry', company: 'Anoual High School', desc: 'Graduated with a scientific baccalauréat — a foundation that instilled analytical thinking and systematic problem-solving, skills I now apply daily in software engineering.', tags: ['Physics', 'Mathematics', 'Chemistry'] }
+              { side: 'right', icon: Rocket, date: '2025 — 2026', role: 'Mobile & Full-Stack Development Program', company: 'Solicode Tangier', desc: 'Advanced program focused on building high-performance mobile apps with Kotlin and full-stack systems using Laravel and Alpine.js. This program emphasizes real-world soft skills, from complex problem solving and client communication to intensive collaboration within high-performing agile teams.', tags: ['Laravel', 'Kotlin', 'Alpine.js', 'Scrum'] },
+              { side: 'left', icon: Briefcase, date: 'Juillet — Août 2025', role: 'Software Development Intern', company: 'Monzed OÜ', desc: 'Contributed to real-world client projects within a remote software consultancy — including key contributions to a powerful AI agentic IDE and the development of my personal project, Orbit.', tags: ['React', 'Vite', 'Supabase'] },
+              { side: 'right', icon: Star, date: '2024 — 2025', role: 'Full-Stack Web Development Program', company: 'Solicode Tangier', desc: 'Completed an intensive full-stack curriculum covering the essentials of web development — from core languages like HTML, CSS, and JavaScript to server-side logic with PHP and WordPress. This program focused on building deep technical knowledge through hands-on practice with real-world projects.', tags: ['HTML/CSS', 'JavaScript', 'PHP', 'WordPress'] },
+              { side: 'left', icon: GraduationCap, date: '2020 — 2021', role: 'Baccalauréat in Physics-Chemistry', company: 'Allal El Fassi High School', desc: 'Graduated with a scientific baccalauréat — a foundation that instilled analytical thinking and systematic problem-solving, skills I now apply daily in software engineering.', tags: [] }
             ].map((entry, i) => (
-              <motion.div 
-                key={i} 
+              <motion.div
+                key={i}
                 className={`exp-entry exp-entry--${entry.side}`}
                 initial={{ opacity: 0, x: entry.side === 'right' ? 20 : -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -430,6 +453,26 @@ const HomePage = () => {
       </motion.div>
 
       <div style={{ height: '2rem' }} />
+
+      {createPortal(
+        <AnimatePresence>
+          {showScrollTop && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 20 }}
+              whileHover={{ y: -4 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={scrollToTop}
+              className="scroll-top-btn"
+              aria-label="Scroll to top"
+            >
+              <ArrowUp size={18} strokeWidth={2} />
+            </motion.button>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 };

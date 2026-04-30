@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
 import { ArrowUpRight, ArrowLeft, ExternalLink, Cpu } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ContactCTA from '../components/ContactCTA.jsx';
 import data from '../data/profile.json';
 
@@ -9,6 +10,7 @@ const ProjectDetailPage = () => {
   const { id } = useParams();
   const project = data.work.find((p) => p.id === id);
   const [activeSection, setActiveSection] = React.useState('overview');
+  const [showBackButton, setShowBackButton] = React.useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,7 +34,15 @@ const ProjectDetailPage = () => {
     const sections = document.querySelectorAll('.pd-section, .pd-specs-section');
     sections.forEach((section) => observer.observe(section));
 
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      setShowBackButton(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [id]);
 
   if (!project) return <Navigate to="/work" replace />;
@@ -44,21 +54,21 @@ const ProjectDetailPage = () => {
     transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
   };
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-      <div className="pd-wrapper">
-        {/* Return Header */}
-        <header className="pd-header">
-          <button 
-            onClick={() => navigate(-1)} 
-            className="pd-return"
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
-          >
-            <ArrowLeft size={16} strokeWidth={1.5} />
-            <span>All work</span>
-          </button>
-        </header>
+  return (
+    <div className="pd-wrapper">
+      {/* Return Header */}
+      <header className="pd-header">
+        <button
+          onClick={() => navigate(-1)}
+          className="pd-return"
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+        >
+          <ArrowLeft size={16} strokeWidth={1.5} />
+          <span>All work</span>
+        </button>
+      </header>
 
       {/* Enhanced Hero Section */}
       <section
@@ -77,7 +87,11 @@ const ProjectDetailPage = () => {
                 className="pd-meta-top"
                 style={{ color: project.accentColor }}
               >
-                {project.category} · {project.company}
+                {project.category} · {project.companyLink ? (
+                  <a href={project.companyLink} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseEnter={(e) => e.target.style.textDecoration = 'underline'} onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
+                    {project.company}
+                  </a>
+                ) : project.company}
               </span>
               <h1 className="pd-title">
                 {project.headline.endsWith('.') ? (
@@ -120,20 +134,36 @@ const ProjectDetailPage = () => {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '24px' }}
             >
-              <p className="pd-meta-label">Selected Project</p>
-              <p className="pd-meta-value" style={{ fontSize: '18px' }}>{project.year}</p>
+              {project.id === 'orbit' && (
+                <img
+                  src="/orbit5.png"
+                  alt="Orbit Logo"
+                  style={{
+                    height: '80px',
+                    width: 'auto',
+                    objectFit: 'contain'
+                  }}
+                />
+              )}
+              <div style={{ textAlign: 'right' }}>
+                <p className="pd-meta-label">Selected Project</p>
+                <p className="pd-meta-value" style={{ fontSize: '18px' }}>{project.year}</p>
+              </div>
             </motion.div>
           </div>
 
-          <motion.div
-            className="pd-hero-main-img"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-          >
-            <img src={project.thumbnail} alt={project.company} />
-          </motion.div>
+          {project.id !== 'orbit' && (
+            <motion.div
+              className="pd-hero-main-img"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            >
+              <img src={project.thumbnail} alt={project.company} />
+            </motion.div>
+          )}
         </div>
       </section>
 
@@ -143,7 +173,10 @@ const ProjectDetailPage = () => {
 
           {/* Side Summary Navigation */}
           <aside className="pd-side-summary">
-            <div className="pd-sticky-wrap">
+            <div className="pd-sticky-wrap" style={{ 
+              maxHeight: 'calc(100vh - 140px)', 
+              overflowY: 'auto'
+            }}>
               <p className="pd-meta-label" style={{ marginBottom: '24px' }}>On this page</p>
               <nav className="pd-summary-nav">
                 <a
@@ -168,24 +201,25 @@ const ProjectDetailPage = () => {
                   0{(project.sections?.length || 0) + 2} — Specs
                 </a>
               </nav>
-
-              {/* Sticky Sidebar Stack — Editorial Professional style */}
-              <div className="pd-side-stack">
-                <p className="pd-meta-label">Infrastructure</p>
-                <div className="pd-side-stack-list">
-                  {project.tags.map((tag, i) => (
-                    <div key={i} className="pd-side-stack-item">
-                      <Cpu size={12} className="pd-side-stack-icon" strokeWidth={1.5} />
-                      <span className="pd-side-stack-name">{tag}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
+
           </aside>
 
           {/* Main Body */}
           <main className="pd-main-body">
+            {/* Inline Infrastructure Stack */}
+            <motion.div className="pd-inline-stack" {...fadeInUp}>
+              <p className="pd-meta-label">Infrastructure</p>
+              <div className="pd-inline-stack-list">
+                {project.tags.map((tag, i) => (
+                  <div key={i} className="pd-inline-stack-item">
+                    <Cpu size={14} className="pd-side-stack-icon" strokeWidth={1.5} />
+                    <span>{tag}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
             {/* Overview Section */}
             <motion.div id="overview" className="pd-section" {...fadeInUp}>
               <span className="pd-section-label">01 — Overview</span>
@@ -203,9 +237,9 @@ const ProjectDetailPage = () => {
                 <div className="pd-section-body">
                   <p>{section.body}</p>
                 </div>
-                {project.images && project.images[i] && (
+                {(project.detailImages || project.images) && (project.detailImages || project.images)[i] && (
                   <div className="pd-image-large">
-                    <img src={project.images[i]} alt={section.title} />
+                    <img src={(project.detailImages || project.images)[i]} alt={section.title} />
                   </div>
                 )}
               </motion.div>
@@ -220,7 +254,13 @@ const ProjectDetailPage = () => {
                 </div>
                 <div className="pd-spec-item">
                   <p className="pd-meta-label">Company</p>
-                  <p className="pd-meta-value">{project.company}</p>
+                  <p className="pd-meta-value">
+                    {project.companyLink ? (
+                      <a href={project.companyLink} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '1px solid currentColor' }}>
+                        {project.company}
+                      </a>
+                    ) : project.company}
+                  </p>
                 </div>
                 <div className="pd-spec-item">
                   <p className="pd-meta-label">Year</p>
@@ -245,6 +285,30 @@ const ProjectDetailPage = () => {
       </div>
 
       <ContactCTA />
+
+      {/* Floating Return Button */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {showBackButton && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8, x: -20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.8, x: -20 }}
+              whileHover={{ x: -4 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                setShowBackButton(false);
+                navigate(-1);
+              }}
+              className="floating-back-btn"
+              aria-label="Return to previous page"
+            >
+              <ArrowLeft size={18} strokeWidth={2} />
+            </motion.button>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 };
