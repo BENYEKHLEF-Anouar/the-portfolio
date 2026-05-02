@@ -84,20 +84,20 @@ const Navbar = () => {
               </Link>
 
               {/* Mobile Navigation — Matches Screenshot (About link + icons) */}
-              <div 
-                className="nav-mobile-toggle" 
-                style={{ 
-                  alignItems: 'center', 
-                  gap: '20px' 
+              <div
+                className="nav-mobile-toggle"
+                style={{
+                  alignItems: 'center',
+                  gap: '20px'
                 }}
               >
-                <Link 
-                  to="/about" 
-                  style={{ 
-                    textDecoration: 'none', 
-                    color: '#9A9A8E', 
+                <Link
+                  to="/about"
+                  style={{
+                    textDecoration: 'none',
+                    color: '#9A9A8E',
                     fontSize: '14px',
-                    fontWeight: 300 
+                    fontWeight: 300
                   }}
                 >
                   About
@@ -133,8 +133,8 @@ const Navbar = () => {
                     }}
                     onMouseEnter={(e) => (e.target.style.color = 'rgb(26, 26, 24)')}
                     onMouseLeave={(e) =>
-                      (e.target.style.color =
-                        location.pathname === to ? 'rgb(26, 26, 24)' : '#9A9A8E')
+                    (e.target.style.color =
+                      location.pathname === to ? 'rgb(26, 26, 24)' : '#9A9A8E')
                     }
                   >
                     {label}

@@ -268,7 +268,7 @@ const HomePage = () => {
               const projectRows = [];
               for (let i = 0; i < projects.length; i += 2) {
                 const pair = projects.slice(i, i + 2);
-                const gridTemplateColumns = pair.length === 1 ? '1fr' : (i % 4 === 0 ? '5fr 7fr' : '7fr 5fr');
+                const gridTemplateColumns = pair.length === 1 ? '1fr' : (i % 4 === 0 ? '7fr 5fr' : '5fr 7fr');
 
                 projectRows.push(
                   <div 
@@ -294,7 +294,13 @@ const HomePage = () => {
                             to={`/work/${project.id}`}
                             style={{ textDecoration: 'none' }}
                           >
-                            <div className={`work-card-v2 ${pair.length === 1 ? 'wc-full-width' : ''}`}>
+                            <div 
+                              className={`work-card-v2 ${pair.length === 1 ? 'wc-full-width' : ''}`}
+                              style={{
+                                '--card-bg': project.cardBg,
+                                '--card-bg-hover': project.cardBgHover
+                              }}
+                            >
                               <div className="wc-meta">
                                 <span className="wc-category">{project.category}</span>
                                 <span className="wc-sep">·</span>

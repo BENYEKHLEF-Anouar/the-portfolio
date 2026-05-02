@@ -8,12 +8,70 @@
   "website": "#",
   "email": "anouarbenyekhlef669@gmail.com",
   "github": "https://github.com/BENYEKHLEF-Anouar",
-  "linkedin": "#",
+  "linkedin": "https://www.linkedin.com/in/anouar-ben-yekhlef-a36567403/",
   "profilePicture": "/profile.png",
   "headerImage": "/banner.png",
   "work": [
     {
+      "id": "soliquiz",
+      "logo": "/soliquiz-icon.png",
+      "cardBg": "#F0F9FB",
+      "cardBgHover": "#E2F6F9",
+      "accentColor": "#17B0CF",
+      "category": "WEB & MOBILE · PFE",
+      "company": "Solicode Tangier",
+      "tagline": "Système de Gestion & d'Auto-évaluation QCM",
+      "headline": "A complete MCQ evaluation ecosystem for Solicode.",
+      "description": "SoliQuiz is a complete solution for managing MCQ evaluations, developed for the Solicode training center. It aims to digitize daily pedagogical feedback by offering a unified ecosystem for trainers and learners. The objective is to replace fragmented workflows with a single platform capable of tracing competency acquisition by micro-objective, automating correction, and providing granular performance analysis.",
+      "thumbnail": "/soliquiz1.png",
+      "images": [
+        "/soliquiz1.png",
+        "/soliquiz2.png"
+      ],
+      "detailImages": [
+        "/soliquiz1.png",
+        "/soliquiz-admin.png",
+        "/soliquiz-formateur.png",
+        "/soliquiz-etudiant.png",
+        "/soliquiz-mobile.png",
+        "/soliquiz-etudiant-qcm.png",
+        "/soliquiz-formateur-qcm.png"
+      ],
+      "tags": ["Laravel 12", "Tailwind CSS", "Alpine.js", "MySQL", "Vite", "NativePHP"],
+      "year": "2025/2026",
+      "link": "#",
+      "github": "https://github.com/BENYEKHLEF-Anouar/SoliQuiz-Web",
+      "featured": true,
+      "sections": [
+        {
+          "title": "Project Overview",
+          "body": "SoliQuiz is a complete solution for managing MCQ evaluations, developed for the Solicode training center. It aims to digitize daily pedagogical feedback by offering a unified ecosystem for trainers and learners. The objective is to replace fragmented workflows with a single platform capable of tracing competency acquisition by micro-objective, automating correction, and providing granular performance analysis."
+        },
+        {
+          "title": "Architecture Overview",
+          "body": "SoliQuiz is a robust Laravel 12 platform designed with a thin-controller / rich-service pattern. All business logic is encapsulated in App\\Services, ensuring a scalable and maintainable codebase. The application serves two primary channels:\n\n• Web Interface: Blade-based role-based dashboards for Admin, Trainer, and Students.\n• RESTful API: A JSON provider secured by Laravel Sanctum for the mobile application ecosystem."
+        },
+        {
+          "title": "Database & Entity Hierarchy",
+          "body": "The relational data layer utilizes Eloquent ORM with a complex hierarchy:\n\n• Pedagogical Structure: Seance → UniteApprentissage → Competence → QCM → Question → Option.\n• User Management: Integrated with Spatie Laravel Permission for fine-grained RBAC (Admin, Formateur, Etudiant).\n• Evaluation Logic: Attempts (Tentatives) track real-time scoring (0–100%) and granular performance per micro-objective."
+        },
+        {
+          "title": "Service Layer & Security",
+          "body": "Security is enforced at multiple levels. The Web layer uses standard session-based auth with role-based routing, while the Mobile layer utilizes Laravel Sanctum for token-based API security. Dedicated services like PassationService manage complex lifecycles, including idempotent attempt starts to prevent duplicate entries."
+        },
+        {
+          "title": "Frontend & Mobile Ecosystem",
+          "body": "The frontend is built on a modern stack of Tailwind CSS and Alpine.js for lightweight reactivity. The mobile version, SoliQuiz Mobile, is a hybrid application utilizing Tailwind CSS 4 and a centralized Alpine.js store for state management. It features a custom 'Ocean Teal' design system and is deployed as an Android APK via NativePHP."
+        },
+        {
+          "title": "Academic Context",
+          "body": "Developed as a Project de Fin de Formation (PFE) at Solicode Tangier (2025/2026). The project followed a rigorous lifecycle: Design Thinking analysis, UI/UX Maquettage, and full technical documentation for both Web and Mobile platforms."
+        }
+      ]
+    },
+    {
       "id": "orbit",
+      "logo": "/orbit5.png",
       "cardBg": "#EEEEFF",
       "cardBgHover": "#E4E4FF",
       "accentColor": "#5B5BD6",
@@ -44,65 +102,48 @@
     },
     {
       "id": "warden",
-      "cardBg": "#FEF3EE",
-      "cardBgHover": "#FAE8DF",
-      "accentColor": "#E85D2F",
-      "category": "FRONTEND · SEO",
+      "logo": "/warden-icon.png",
+      "cardBg": "#FFFBF0",
+      "cardBgHover": "#FEF5E0",
+      "accentColor": "#F2B64B",
+      "category": "LUXURY REAL ESTATE · WEB",
       "company": "Warden Properties",
-      "tagline": "International real estate, 4 languages, one platform.",
-      "headline": "A multilingual real estate site built for global reach.",
-      "description": "Warden Properties is an international real estate marketing website targeting buyers in Morocco, Spain, the UK, and the Gulf. The project required a 4-language architecture (EN, FR, ES, AR) with right-to-left support, a complete SEO strategy using hreflang/canonical tags, and a conversion-focused UI deployed on Vercel.",
-      "thumbnail": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop",
+      "tagline": "Luxury Real Estate Concierge & Wealth Management.",
+      "headline": "A premium digital showcase for luxury real estate in Tangier.",
+      "description": "Warden Properties is a premium digital showcase for a high-end real estate agency based in Tangier, Morocco. The platform is designed to provide a bespoke experience for luxury property owners and investors, embodying a 'Luminous' aesthetic that blends discretion with five-star hotel standards.",
+      "thumbnail": "/warden-accueil.png",
       "images": [
-        "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop"
+        "/warden-accueil.png",
+        "/warden-proprietaires.png"
       ],
-      "tags": ["HTML", "CSS", "JavaScript", "SEO", "Vercel"],
-      "year": "2024",
-      "link": "#",
-      "github": "#",
+      "detailImages": [
+        "/warden-accueil.png",
+        "/warden-proprietaires.png",
+        "/warden-investisseurs.png",
+        "/warden-apropos.png",
+        "/warden-contact.png"
+      ],
+      "tags": ["HTML5", "Tailwind CSS", "JavaScript", "Vercel", "Multilingual"],
+      "year": "2025",
+      "link": "https://warden.ma/",
+      "github": "https://github.com/BENYEKHLEF-Anouar/Warden.properties",
       "featured": true,
       "sections": [
         {
-          "title": "The challenge",
-          "body": "Real estate clients browse in their native language and search engines must serve the right language version. A single misconfigured hreflang can tank rankings across markets. The site also needed to handle Arabic RTL layout without a framework — pure, clean HTML and CSS."
+          "title": "Overview",
+          "body": "Warden Properties serves as a digital showcase for a high-end agency in Tangier. The platform targets owners for the rental management of luxury villas and riads, as well as investors seeking a curated portfolio. The design embodies the 'Luminous' aesthetic, combining technical rigor with luxury hotel standards."
         },
         {
-          "title": "The approach",
-          "body": "Each language lives in its own directory (/en, /fr, /es, /ar), sharing assets but with fully translated content. Canonical URLs were standardized to avoid duplicate content penalties. hreflang tags were audited across all pages. The CSS uses logical properties to support both LTR and RTL layouts from a single stylesheet."
+          "title": "Features & Experience",
+          "body": "• Multilingual Architecture: Full localization in four languages (FR, EN, AR, ES) with dedicated routing.\n• Premium Design System: Use of glassmorphism, fluid scroll animations, and sophisticated typography.\n• Mobile Optimization: A 'mobile-first' approach ensuring perfect fluidity across all devices."
         },
         {
-          "title": "Results",
-          "body": "The site achieved first-page rankings across all four target markets within 3 months of launch. Load times under 1.2s on mobile. Vercel's edge network ensures sub-100ms TTFB globally. The client expanded their ad spend by 3x after seeing the organic growth."
-        }
-      ]
-    },
-    {
-      "id": "portfolio",
-      "cardBg": "#F0F7F4",
-      "cardBgHover": "#E4F0EC",
-      "accentColor": "#2E7D5E",
-      "category": "FRONTEND · DESIGN",
-      "company": "This Portfolio",
-      "tagline": "Built from scratch with React, Vite, and Tailwind.",
-      "headline": "Designed and built entirely with React. No templates.",
-      "description": "This portfolio was built from scratch — every layout decision, interaction, and detail is intentional. Inspired by editorial design, it prioritizes readability and craft over flashy effects. Built with React, Vite, Tailwind CSS v4, and react-router-dom.",
-      "thumbnail": "https://images.unsplash.com/photo-1537432376769-00f5c2f4c8d2?q=80&w=1200&auto=format&fit=crop",
-      "images": [
-        "https://images.unsplash.com/photo-1545235617-9465d2a55698?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop"
-      ],
-      "tags": ["React", "Vite", "Tailwind CSS v4", "React Router"],
-      "year": "2026",
-      "link": "#",
-      "github": "#",
-      "featured": false,
-      "sections": [
+          "title": "Technical Stack",
+          "body": "• Core: Semantic HTML5 and Vanilla JavaScript.\n• Style: Tailwind CSS for a responsive, utility-oriented system.\n• Typography: Cormorant Garamond (Editorial Serif) and Inter (Sans-serif).\n• Analytics: Integrated Vercel Web Analytics for performance tracking."
+        },
         {
-          "title": "Why build it",
-          "body": "I wanted a portfolio that felt like mine — not a theme, not a template. Every spacing decision, every font weight, every color was chosen deliberately. The reference was Anukul Gurung's portfolio, which I admire for its editorial clarity and typographic discipline."
+          "title": "SEO & Performance",
+          "body": "The site integrates advanced SEO with Schema.org LD+JSON (RealEstateAgent) for optimal ranking. Deployed on Vercel, it benefits from Clean URLs and ultra-fast loading times via a global CDN."
         }
       ]
     }
@@ -115,10 +156,10 @@
       "tags": ["React", "Supabase", "Gemini API"]
     },
     {
-      "emoji": "🌐",
-      "title": "This Portfolio",
-      "description": "Designed and built entirely with React and Tailwind CSS. No templates, no themes — every layout decision, every animation, every detail is intentional.",
-      "tags": ["React", "Vite", "Tailwind CSS"]
+      "emoji": "🎓",
+      "title": "SoliQuiz",
+      "description": "Finalizing the PFE project: a comprehensive MCQ evaluation system with Laravel 12 and Alpine.js. Integrating mobile support via NativePHP.",
+      "tags": ["Laravel 12", "Alpine.js", "NativePHP"]
     },
     {
       "emoji": "📦",

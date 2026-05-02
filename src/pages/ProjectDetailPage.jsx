@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
-import { ArrowUpRight, ArrowLeft, ExternalLink, Cpu } from 'lucide-react';
+import { ArrowUpRight, ArrowLeft, ExternalLink, Cpu, ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ContactCTA from '../components/ContactCTA.jsx';
 import data from '../data/profile.json';
@@ -10,6 +10,19 @@ const ProjectDetailPage = () => {
   const project = data.work.find((p) => p.id === id);
   const [activeSection, setActiveSection] = React.useState('overview');
   const [showBackButton, setShowBackButton] = React.useState(false);
+  const [showScrollTop, setShowScrollTop] = React.useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 500);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     // Scrollspy Observer
@@ -57,14 +70,19 @@ const ProjectDetailPage = () => {
     <div className="pd-wrapper">
       {/* Return Header */}
       <header className="pd-header">
-        <button
-          onClick={() => navigate(-1)}
+        <Link
+          to="/"
           className="pd-return"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+          onClick={(e) => {
+            if (window.history.length > 1) {
+              e.preventDefault();
+              navigate(-1);
+            }
+          }}
         >
           <ArrowLeft size={16} strokeWidth={1.5} />
           <span>All work</span>
-        </button>
+        </Link>
       </header>
 
       {/* Enhanced Hero Section */}
@@ -133,12 +151,12 @@ const ProjectDetailPage = () => {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '24px' }}
             >
-              {project.id === 'orbit' && (
+              {project.logo && (
                 <img
-                  src="/orbit5.png"
-                  alt="Orbit Logo"
+                  src={project.logo}
+                  alt={`${project.company} Logo`}
                   style={{
-                    height: '80px',
+                    height: project.id === 'warden' ? '55px' : '90px',
                     width: 'auto',
                     objectFit: 'contain'
                   }}
@@ -151,16 +169,6 @@ const ProjectDetailPage = () => {
             </motion.div>
           </div>
 
-          {project.id !== 'orbit' && (
-            <motion.div
-              className="pd-hero-main-img"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            >
-              <img src={project.thumbnail} alt={project.company} />
-            </motion.div>
-          )}
         </div>
       </section>
 
@@ -170,8 +178,8 @@ const ProjectDetailPage = () => {
 
           {/* Side Summary Navigation */}
           <aside className="pd-side-summary">
-            <div className="pd-sticky-wrap" style={{ 
-              maxHeight: 'calc(100vh - 140px)', 
+            <div className="pd-sticky-wrap" style={{
+              maxHeight: 'calc(100vh - 140px)',
               overflowY: 'auto'
             }}>
               <p className="pd-meta-label" style={{ marginBottom: '24px' }}>On this page</p>
@@ -284,25 +292,22 @@ const ProjectDetailPage = () => {
       <ContactCTA />
 
       {/* Floating Return Button */}
-      {/* <AnimatePresence>
-        {showBackButton && (
+      <AnimatePresence>
+        {showScrollTop && (
           <motion.button
-            initial={{ opacity: 0, scale: 0.8, x: -20 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            exit={{ opacity: 0, scale: 0.8, x: -20 }}
-            whileHover={{ x: -4 }}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            whileHover={{ y: -4 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              setShowBackButton(false);
-              navigate(-1);
-            }}
-            className="floating-back-btn"
-            aria-label="Return to previous page"
+            onClick={scrollToTop}
+            className="scroll-top-btn"
+            aria-label="Scroll to top"
           >
-            <ArrowLeft size={18} strokeWidth={2} />
+            <ArrowUp size={18} strokeWidth={2} />
           </motion.button>
         )}
-      </AnimatePresence> */}
+      </AnimatePresence>
     </div>
   );
 };
