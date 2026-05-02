@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
 import { ArrowUpRight, ArrowLeft, ExternalLink, Cpu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,8 +12,6 @@ const ProjectDetailPage = () => {
   const [showBackButton, setShowBackButton] = React.useState(false);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-
     // Scrollspy Observer
     const observerOptions = {
       root: null,
@@ -51,7 +48,7 @@ const ProjectDetailPage = () => {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
   };
 
   const navigate = useNavigate();
@@ -81,7 +78,7 @@ const ProjectDetailPage = () => {
               className="pd-hero-text-wrap"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <span
                 className="pd-meta-top"
@@ -133,7 +130,7 @@ const ProjectDetailPage = () => {
               className="pd-hero-side-meta"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '24px' }}
             >
               {project.id === 'orbit' && (
@@ -157,9 +154,9 @@ const ProjectDetailPage = () => {
           {project.id !== 'orbit' && (
             <motion.div
               className="pd-hero-main-img"
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             >
               <img src={project.thumbnail} alt={project.company} />
             </motion.div>
@@ -287,28 +284,25 @@ const ProjectDetailPage = () => {
       <ContactCTA />
 
       {/* Floating Return Button */}
-      {typeof document !== 'undefined' && createPortal(
-        <AnimatePresence>
-          {showBackButton && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8, x: -20 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              exit={{ opacity: 0, scale: 0.8, x: -20 }}
-              whileHover={{ x: -4 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                setShowBackButton(false);
-                navigate(-1);
-              }}
-              className="floating-back-btn"
-              aria-label="Return to previous page"
-            >
-              <ArrowLeft size={18} strokeWidth={2} />
-            </motion.button>
-          )}
-        </AnimatePresence>,
-        document.body
-      )}
+      {/* <AnimatePresence>
+        {showBackButton && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, x: -20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: -20 }}
+            whileHover={{ x: -4 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              setShowBackButton(false);
+              navigate(-1);
+            }}
+            className="floating-back-btn"
+            aria-label="Return to previous page"
+          >
+            <ArrowLeft size={18} strokeWidth={2} />
+          </motion.button>
+        )}
+      </AnimatePresence> */}
     </div>
   );
 };

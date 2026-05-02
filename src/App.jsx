@@ -12,8 +12,9 @@ const scrollPositions = {};
 
 // Helper component to handle scrolling to hash links and scroll restoration
 const ScrollToHash = () => {
-  const { pathname, hash } = useLocation();
+  const location = useLocation();
   const navType = useNavigationType();
+  const previousPathnameRef = React.useRef(location.pathname);
 
   useEffect(() => {
     // Disable native scroll restoration so it doesn't jump during exit animations
@@ -22,35 +23,47 @@ const ScrollToHash = () => {
     }
   }, []);
 
-  // Track scroll position for the current route to enable "Smart Checkpoints"
+  // Track scroll position for the exact history entry to enable pixel-perfect checkpoints
   useEffect(() => {
     const handleScroll = () => {
-      scrollPositions[pathname] = window.scrollY;
+      scrollPositions[location.key] = window.scrollY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [pathname]);
+  }, [location.key]);
 
   useEffect(() => {
-    if (hash) {
-      const element = document.getElementById(hash.replace('#', ''));
-      if (element) {
-        setTimeout(() => {
+    const isSamePage = previousPathnameRef.current === location.pathname;
+    previousPathnameRef.current = location.pathname;
+
+    if (isSamePage) {
+      // Same page navigation (e.g. clicking a hash link or POPping back to a hash on the same page)
+      if (navType === 'POP' && scrollPositions[location.key] !== undefined) {
+        window.scrollTo(0, scrollPositions[location.key]);
+      } else if (location.hash) {
+        const element = document.getElementById(location.hash.replace('#', ''));
+        if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        }
+      } else {
+        window.scrollTo(0, 0);
       }
     } else {
-      // Defer scroll until the exit animation completes in AnimatePresence
+      // Cross-page navigation: defer scroll until AnimatePresence exit completes
       scrollState.shouldScroll = true;
-      if (navType === 'POP' && scrollPositions[pathname] !== undefined) {
-        // Restore previous scroll position on Back navigation
-        scrollState.y = scrollPositions[pathname];
+      if (navType === 'POP' && scrollPositions[location.key] !== undefined) {
+        // Always prioritize exact pixel restoration on Back navigation
+        scrollState.hash = '';
+        scrollState.y = scrollPositions[location.key];
+      } else if (location.hash) {
+        scrollState.hash = location.hash.replace('#', '');
+        scrollState.y = 0;
       } else {
-        // Scroll to top on new page navigation
+        scrollState.hash = '';
         scrollState.y = 0;
       }
     }
-  }, [pathname, hash, navType]);
+  }, [location.key, location.hash, navType, location.pathname]);
 
   return null;
 };
@@ -59,25 +72,22 @@ const ScrollToHash = () => {
 const PageWrapper = ({ children, type }) => {
   const isProject = type === 'project';
 
-  // Editorial Glide: Liquid scale and perspective travel
+  // Editorial Glide: Lightweight, lag-free page transition
   const variants = {
     initial: {
       opacity: 0,
-      y: isProject ? 80 : 20,
-      scale: isProject ? 0.96 : 1,
-      filter: isProject ? 'blur(8px)' : 'blur(0px)'
+      y: 15,
     },
     animate: {
       opacity: 1,
       y: 0,
-      scale: 1,
-      filter: 'blur(0px)'
+      transitionEnd: {
+        transform: ''
+      }
     },
     exit: {
       opacity: 0,
-      y: isProject ? 40 : -20,
-      scale: 0.98,
-      filter: isProject ? 'blur(8px)' : 'blur(0px)'
+      y: -15,
     }
   };
 
@@ -111,7 +121,26 @@ function App() {
           mode="wait"
           onExitComplete={() => {
             if (scrollState.shouldScroll) {
-              window.scrollTo(0, scrollState.y);
+              if (scrollState.hash) {
+                // Defer slightly to ensure DOM has painted the element
+                setTimeout(() => {
+                  const element = document.getElementById(scrollState.hash);
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'auto' });
+                  }
+                }, 50);
+              } else {
+                const targetY = scrollState.y;
+                // Fire immediately
+                window.scrollTo(0, targetY);
+                // And fire across multiple frames to guarantee exact positioning after React's paint cycle
+                requestAnimationFrame(() => {
+                  window.scrollTo(0, targetY);
+                  setTimeout(() => window.scrollTo(0, targetY), 10);
+                  setTimeout(() => window.scrollTo(0, targetY), 50);
+                  setTimeout(() => window.scrollTo(0, targetY), 100);
+                });
+              }
               scrollState.shouldScroll = false;
             }
           }}

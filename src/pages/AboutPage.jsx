@@ -5,6 +5,77 @@ import { Link, useNavigate } from 'react-router-dom';
 import data from '../data/profile.json';
 import ContactCTA from '../components/ContactCTA';
 
+const PhotoItem = ({ card, index, cards, moveToEnd }) => {
+  const isTop = index === 0;
+
+  // Snappy reordering physics
+  const tossTransition = {
+    type: 'spring',
+    stiffness: 180,
+    damping: 25,
+    mass: 0.8
+  };
+
+  const variants = {
+    initial: {
+      rotate: card.rot,
+      x: 0,
+      y: 0,
+      scale: 0.9,
+      opacity: 0
+    },
+    animate: {
+      rotate: isTop ? card.rot : card.rot + (index * 2),
+      x: isTop ? 0 : card.x,
+      y: isTop ? 0 : card.y,
+      scale: 1 - (index * 0.02),
+      opacity: 1,
+      transition: {
+        ...tossTransition,
+        delay: 0.2 + (index * 0.08)
+      }
+    },
+    hover: {
+      rotate: isTop ? card.rot : card.rot + (index * 4),
+      x: isTop ? 0 : card.x * 2,
+      y: isTop ? 0 : card.y * 2,
+      scale: isTop ? 1.02 : 1 - (index * 0.01),
+      transition: { type: 'spring', stiffness: 150, damping: 20 }
+    }
+  };
+
+  return (
+    <motion.div
+      layout
+      className="photo-item"
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      whileHover={isTop ? "hover" : ""}
+      transition={tossTransition}
+      style={{
+        zIndex: cards.length - index,
+        cursor: isTop ? 'grab' : 'default',
+      }}
+      drag={isTop}
+      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+      dragElastic={0.8}
+      onDragEnd={(_, info) => {
+        if (Math.abs(info.offset.x) > 50 || Math.abs(info.offset.y) > 50) {
+          moveToEnd(index);
+        }
+      }}
+      whileDrag={{
+        scale: 1.05,
+        zIndex: 100
+      }}
+    >
+      <img src={card.img || card.url} alt={card.caption} />
+      <div className="photo-caption">{card.caption}</div>
+    </motion.div>
+  );
+};
+
 const AboutPage = () => {
   const initialCards = [
     { id: 1, img: data.profilePicture, caption: "Tangier creative affairs", rot: -2, x: 0, y: 0 },
@@ -23,7 +94,7 @@ const AboutPage = () => {
   };
 
   const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
   };
@@ -37,26 +108,30 @@ const AboutPage = () => {
   return (
     <div className="about-page">
       {/* ── Close Button ──────────────────────────────── */}
-      <button
-        onClick={() => navigate(-1)}
+      <Link
+        to="/"
         className="about-close-btn"
-        style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+        style={{ 
+          background: 'rgba(0,0,0,0.03)', 
+          borderRadius: '50%', 
+          width: '44px', 
+          height: '44px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          top: '20px',
+          right: '20px',
+          position: 'fixed',
+          zIndex: 2001
+        }}
       >
-        <X size={28} strokeWidth={1.5} />
-      </button>
+        <X size={20} strokeWidth={1.5} />
+      </Link>
 
       <div className="page-container-wide">
         <div className="about-layout">
-
-          {/* ── Left Column: Content ───────────────────── */}
-          <motion.div
-            className="about-content"
-            variants={staggerContainer}
-            initial="initial"
-            animate="animate"
-          >
+          <motion.div className="about-content" variants={staggerContainer} initial="initial" animate="animate">
             <motion.span className="about-mini-title" variants={fadeInUp}>About</motion.span>
-
             <motion.h1 className="about-title" variants={fadeInUp}>
               Hello, I'm Anouar<span className="accent-dot" />
             </motion.h1>
@@ -66,15 +141,16 @@ const AboutPage = () => {
               <Volume2 size={14} className="phonetic-icon" />
             </motion.div>
 
+            <div className="about-photos-container about-photos-mobile" style={{ margin: '32px 0', display: 'none' }}>
+              <motion.div className="photo-stack" whileHover="hover">
+                {cards.map((card, index) => <PhotoItem key={card.id} card={card} index={index} cards={cards} moveToEnd={moveToEnd} />)}
+              </motion.div>
+            </div>
+
             <motion.div className="about-bio" variants={fadeInUp}>
-              {data.aboutBio.split('\n\n').map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
+              {data.aboutBio.split('\n\n').map((para, i) => <p key={i}>{para}</p>)}
             </motion.div>
 
-
-
-            {/* Languages Section */}
             <motion.div className="about-languages" variants={fadeInUp} style={{ marginTop: '48px' }}>
               <h2 className="footer-label">Languages</h2>
               <div className="lang-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '32px', marginTop: '24px' }}>
@@ -88,96 +164,17 @@ const AboutPage = () => {
             </motion.div>
           </motion.div>
 
-          {/* ── Right Column: Interactive Photo Stack ────── */}
-          <motion.div
-            className="about-photos-container"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
+          {/* Desktop Right Column: Interactive Photo Stack */}
+          <div className="about-photos-container about-photos-desktop">
             <motion.div
               className="photo-stack"
               whileHover="hover"
             >
-              {cards.map((card, index) => {
-                const isTop = index === 0;
-
-                // Snappy reordering physics
-                const tossTransition = {
-                  type: 'spring',
-                  stiffness: 180,
-                  damping: 25,
-                  mass: 0.8
-                };
-
-                const variants = {
-                  initial: {
-                    rotate: card.rot,
-                    x: 0,
-                    y: 0,
-                    scale: 0.9,
-                    opacity: 0
-                  },
-                  animate: {
-                    rotate: isTop ? card.rot : card.rot + (index * 2),
-                    x: isTop ? 0 : card.x,
-                    y: isTop ? 0 : card.y,
-                    scale: 1 - (index * 0.02),
-                    opacity: 1,
-                    transition: {
-                      ...tossTransition,
-                      // Staggered entrance for the initial mount
-                      delay: 0.2 + (index * 0.08)
-                    }
-                  },
-                  hover: {
-                    rotate: isTop ? card.rot : card.rot + (index * 4),
-                    x: isTop ? 0 : card.x * 2,
-                    y: isTop ? 0 : card.y * 2,
-                    scale: isTop ? 1.02 : 1 - (index * 0.01),
-                    transition: { type: 'spring', stiffness: 150, damping: 20 }
-                  }
-                };
-
-                return (
-                  <motion.div
-                    key={card.id}
-                    layout
-                    className="photo-item"
-                    variants={variants}
-                    initial="initial"
-                    animate="animate"
-                    whileHover={isTop ? "hover" : ""}
-                    transition={tossTransition}
-                    style={{
-                      zIndex: cards.length - index,
-                      cursor: isTop ? 'grab' : 'default',
-                    }}
-                    drag={isTop}
-                    dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                    dragElastic={0.8}
-                    onDragEnd={(_, info) => {
-                      if (Math.abs(info.offset.x) > 50 || Math.abs(info.offset.y) > 50) {
-                        moveToEnd(index);
-                      }
-                    }}
-                    whileDrag={{
-                      scale: 1.05,
-                      rotate: 0,
-                      zIndex: 100
-                    }}
-                  >
-                    <img src={card.img} alt={card.caption} draggable="false" />
-                    {isTop && (
-                      <div className="photo-caption">
-                        <span>{card.caption}</span>
-                      </div>
-                    )}
-                  </motion.div>
-                );
-              })}
+              {cards.map((card, index) => (
+                <PhotoItem key={card.id} card={card} index={index} cards={cards} moveToEnd={moveToEnd} />
+              ))}
             </motion.div>
-          </motion.div>
+          </div>
 
         </div>
 
@@ -197,7 +194,7 @@ const AboutPage = () => {
           <div className="exp-main-list">
             {data.experience.map((exp, i) => (
               <div key={i} className="exp-row">
-                <div className={`exp-col-logo ${exp.company === 'Solicode' ? 'full-fill' : ''}`}>
+                <div className={`exp-col-logo ${exp.company?.includes('Solicode') ? 'full-fill' : ''}`}>
                   {exp.logo ? (
                     <img src={exp.logo} alt={exp.company} />
                   ) : (

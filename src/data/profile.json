@@ -129,6 +129,13 @@
   ],
   "experience": [
     {
+      "company": "Solicode Tangier",
+      "logo": "/solicode2.jfif",
+      "role": "Mobile & Full-Stack Development Program",
+      "duration": "2025 – 2026",
+      "description": "Advanced training in mobile development with Kotlin and full-stack web development."
+    },
+    {
       "company": "Monzed OÜ",
       "logo": "/monzed.png",
       "role": "Remote Full Stack Developer Intern",
@@ -137,10 +144,10 @@
       "description": "Designed and developed a modern web application using React and Vite for AI-assisted code generation (Orbit). Integrated Gemini API and Supabase."
     },
     {
-      "company": "Solicode",
+      "company": "Solicode Tangier",
       "logo": "/solicode2.jfif",
-      "role": "Full-Stack Web Development",
-      "duration": "2024 – 2026",
+      "role": "Full-Stack Web Development Program",
+      "duration": "2024 – 2025",
       "description": "Intensive web development training covering PHP, Laravel, React, and agile methodologies."
     }
   ],

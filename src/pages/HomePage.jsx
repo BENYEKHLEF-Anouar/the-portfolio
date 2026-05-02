@@ -8,7 +8,6 @@ import ContactCTA from '../components/ContactCTA.jsx';
 import data from '../data/profile.json';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 
 import Navbar from '../components/Navbar.jsx';
 
@@ -83,7 +82,7 @@ const HomePage = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
@@ -91,22 +90,23 @@ const HomePage = () => {
     <div style={{ paddingTop: 10 }}>
       <Navbar />
       {/* ── Hero Section ──────────────────────────────── */}
-      <motion.section
+      <section
+        className="hero-section"
         style={{ padding: '50px 0 100px' }}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={revealVariants}
       >
         <div className="page-container-wide">
-          <div style={{
-            display: 'flex',
-            gap: 48,
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}>
+          <div 
+            className="hero-flex-container"
+            style={{
+              display: 'flex',
+              gap: 48,
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+            }}
+          >
             <motion.div
+              className="hero-img-box"
               style={{
                 width: 220,
                 height: 270,
@@ -129,8 +129,8 @@ const HomePage = () => {
               />
             </motion.div>
 
-            <div style={{ paddingTop: 0, minWidth: 320 }}>
-              <p style={{
+            <div className="hero-right-side" style={{ paddingTop: 0, minWidth: 320 }}>
+              <p className="hero-role-label" style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontSize: '14px',
                 fontWeight: 500,
@@ -141,7 +141,7 @@ const HomePage = () => {
                 {data.role}
               </p>
 
-              <h1 style={{
+              <h1 className="hero-main-title" style={{
                 fontSize: 'clamp(3rem, 5.5vw, 4.5rem)',
                 fontWeight: 400,
                 lineHeight: 1.05,
@@ -153,7 +153,7 @@ const HomePage = () => {
                 I build fast, scalable<br />web experiences<span style={{ color: '#E85D2F' }}>.</span>
               </h1>
 
-              <p style={{
+              <p className="hero-bio-text" style={{
                 fontSize: '1.0625rem',
                 lineHeight: 1.5,
                 color: '#1A1A1A',
@@ -240,7 +240,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── Selected Work ───────────────────────────── */}
       <motion.section
@@ -271,7 +271,15 @@ const HomePage = () => {
                 const gridTemplateColumns = pair.length === 1 ? '1fr' : (i % 4 === 0 ? '5fr 7fr' : '7fr 5fr');
 
                 projectRows.push(
-                  <div key={i} style={{ display: 'grid', gridTemplateColumns, gap: 16 }}>
+                  <div 
+                    key={i} 
+                    className="work-row-grid"
+                    style={{ 
+                      display: 'grid', 
+                      '--desktop-grid': gridTemplateColumns, 
+                      gap: 16 
+                    }}
+                  >
                     {pair.map((project) => {
                       const imgCount = project.images?.length ?? 0;
                       const imgClass = (idx) => {
@@ -281,31 +289,16 @@ const HomePage = () => {
                       };
 
                       return (
-                        <motion.div
-                          key={project.id}
-                          whileHover={{ y: -5 }}
-                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        >
+                        <div key={project.id}>
                           <Link
                             to={`/work/${project.id}`}
                             style={{ textDecoration: 'none' }}
                           >
-                            <div
-                              className={`work-card-v2 ${pair.length === 1 ? 'wc-full-width' : ''}`}
-                              style={{
-                                '--card-bg-hover': project.cardBgHover
-                              }}
-                            >
-                              <div className="wc-arrow">
-                                <ArrowUpRight size={18} strokeWidth={1} />
-                              </div>
-
-                              <div className="wc-header">
-                                <div className="wc-meta">
-                                  <span className="wc-category">{project.category}</span>
-                                  <span className="wc-sep">·</span>
-                                  <span className="wc-company">{project.company}</span>
-                                </div>
+                            <div className={`work-card-v2 ${pair.length === 1 ? 'wc-full-width' : ''}`}>
+                              <div className="wc-meta">
+                                <span className="wc-category">{project.category}</span>
+                                <span className="wc-sep">·</span>
+                                <span className="wc-company">{project.company}</span>
                               </div>
 
                               <h3 className="wc-headline">{project.headline}</h3>
@@ -321,7 +314,7 @@ const HomePage = () => {
                               )}
                             </div>
                           </Link>
-                        </motion.div>
+                        </div>
                       );
                     })}
                   </div>
@@ -454,25 +447,22 @@ const HomePage = () => {
 
       <div style={{ height: '2rem' }} />
 
-      {createPortal(
-        <AnimatePresence>
-          {showScrollTop && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: 20 }}
-              whileHover={{ y: -4 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={scrollToTop}
-              className="scroll-top-btn"
-              aria-label="Scroll to top"
-            >
-              <ArrowUp size={18} strokeWidth={2} />
-            </motion.button>
-          )}
-        </AnimatePresence>,
-        document.body
-      )}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            whileHover={{ y: -4 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={scrollToTop}
+            className="scroll-top-btn"
+            aria-label="Scroll to top"
+          >
+            <ArrowUp size={18} strokeWidth={2} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
