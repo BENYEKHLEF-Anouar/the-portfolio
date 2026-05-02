@@ -24,13 +24,15 @@ const ScrollToHash = () => {
   }, []);
 
   // Track scroll position for the exact history entry to enable pixel-perfect checkpoints
+  // Also track by pathname to allow "app-like" resume when clicking the logo to return home
   useEffect(() => {
     const handleScroll = () => {
       scrollPositions[location.key] = window.scrollY;
+      scrollPositions[location.pathname] = window.scrollY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.key]);
+  }, [location.key, location.pathname]);
 
   useEffect(() => {
     const isSamePage = previousPathnameRef.current === location.pathname;
@@ -55,6 +57,10 @@ const ScrollToHash = () => {
         // Always prioritize exact pixel restoration on Back navigation
         scrollState.hash = '';
         scrollState.y = scrollPositions[location.key];
+      } else if (location.pathname === '/' && scrollPositions['/'] !== undefined && !location.hash) {
+        // Feature: Smart resume for the home page. When clicking "Return Home", restore previous scroll depth instead of top.
+        scrollState.hash = '';
+        scrollState.y = scrollPositions['/'];
       } else if (location.hash) {
         scrollState.hash = location.hash.replace('#', '');
         scrollState.y = 0;
