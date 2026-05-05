@@ -105,7 +105,7 @@ const HomePage = () => {
               flexWrap: 'wrap',
             }}
           >
-            <motion.div
+            <div
               className="hero-img-box"
               style={{
                 width: 220,
@@ -114,8 +114,6 @@ const HomePage = () => {
                 overflow: 'hidden',
                 flexShrink: 0,
               }}
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <img
                 src={data.profilePicture}
@@ -127,7 +125,7 @@ const HomePage = () => {
                   objectPosition: 'center 80%' 
                 }}
               />
-            </motion.div>
+            </div>
 
             <div className="hero-right-side" style={{ paddingTop: 0, minWidth: 320 }}>
               <p className="hero-role-label" style={{
@@ -294,8 +292,8 @@ const HomePage = () => {
                             to={`/work/${project.id}`}
                             style={{ textDecoration: 'none' }}
                           >
-                            <div 
-                              className={`work-card-v2 ${pair.length === 1 ? 'wc-full-width' : ''}`}
+                            <div
+                              className={`work-card-v2 ${pair.length === 1 ? 'wc-full-width' : ''} ${project.id === 'warden' ? 'wc-warden' : ''}`}
                               style={{
                                 '--card-bg': project.cardBg,
                                 '--card-bg-hover': project.cardBgHover

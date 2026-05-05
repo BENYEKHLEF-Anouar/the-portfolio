@@ -61,11 +61,11 @@ const Navbar = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                maxWidth: '1100px',
+                maxWidth: '1200px',
                 width: '100%',
                 height: '100%',
                 margin: '0 auto',
-                padding: '14px 24px',
+                padding: '14px 12px',
                 boxSizing: 'border-box',
               }}
             >
@@ -102,7 +102,7 @@ const Navbar = () => {
                 >
                   About
                 </Link>
-                <button
+                {/* <button
                   style={{
                     background: 'transparent',
                     border: 'none',
@@ -114,7 +114,7 @@ const Navbar = () => {
                   }}
                 >
                   <Moon size={15} strokeWidth={1.25} />
-                </button>
+                </button> */}
               </div>
 
               {/* Desktop Navigation */}
@@ -156,7 +156,7 @@ const Navbar = () => {
                 >
                   <Globe size={15} strokeWidth={1.25} />
                 </button>
-                <button
+                {/* <button
                   style={{
                     background: 'transparent',
                     border: 'none',
@@ -171,7 +171,7 @@ const Navbar = () => {
                   onMouseLeave={(e) => (e.currentTarget.style.color = '#9A9A8E')}
                 >
                   <Moon size={15} strokeWidth={1.25} />
-                </button>
+                </button> */}
               </nav>
             </div>
           </motion.header>

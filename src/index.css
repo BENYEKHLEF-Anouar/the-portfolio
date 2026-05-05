@@ -385,6 +385,26 @@ body::-webkit-scrollbar {
   transition-delay: 0.05s;
 }
 
+/* ── Warden-specific smaller images ── */
+.work-card-v2.wc-warden .wc-img-solo-0 {
+  width: 58%;
+  max-width: 510px;
+  transform: rotate(-3deg) translateY(20px) translateX(20px);
+}
+
+.work-card-v2.wc-warden .wc-img-solo-1 {
+  width: 62%;
+  max-width: 530px;
+}
+
+.work-card-v2.wc-warden:hover .wc-img-solo-0 {
+  transform: rotate(-2deg) translateY(0) translateX(25px);
+}
+
+.work-card-v2.wc-warden:hover .wc-img-solo-1 {
+  transform: translateY(0);
+}
+
 /* ── Full-width spread ── */
 .wc-full-width .wc-img-0 {
   width: 40%;
@@ -1302,9 +1322,9 @@ body::-webkit-scrollbar {
 }
 
 .cta-send-btn:hover {
-  background: #2E2E2E;
-  box-shadow: 0 8px 24px -6px rgba(26, 26, 26, 0.28);
-  transform: translateY(-1px);
+  background: black;
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0);
+  transform: translateY(-2px);
 }
 
 .cta-send-btn:active {
