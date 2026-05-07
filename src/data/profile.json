@@ -10,7 +10,7 @@
   "github": "https://github.com/BENYEKHLEF-Anouar",
   "linkedin": "https://www.linkedin.com/in/anouar-ben-yekhlef-a36567403/",
   "profilePicture": "/profile.png",
-  "headerImage": "/banner.png",
+  "headerImage": "/warden-accueil.png",
   "work": [
     {
       "id": "soliquiz",
@@ -174,7 +174,8 @@
       "logo": "/solicode2.jfif",
       "role": "Mobile & Full-Stack Development Program",
       "duration": "2025 – 2026",
-      "description": "Advanced training in mobile development with Kotlin and full-stack web development."
+      "description": "Advanced training in mobile development with Kotlin and full-stack web development.",
+      "tags": ["Kotlin", "React", "Full-Stack", "Mobile Dev"]
     },
     {
       "company": "Monzed OÜ",
@@ -182,14 +183,16 @@
       "role": "Remote Full Stack Developer Intern",
       "duration": "July – August 2025",
       "location": "Tallinn, Estonia",
-      "description": "Designed and developed a modern web application using React and Vite for AI-assisted code generation (Orbit). Integrated Gemini API and Supabase."
+      "description": "Designed and developed a modern web application using React and Vite for AI-assisted code generation (Orbit). Integrated Gemini API and Supabase.",
+      "tags": ["React", "Vite", "Gemini API", "Supabase"]
     },
     {
       "company": "Solicode Tangier",
       "logo": "/solicode2.jfif",
       "role": "Full-Stack Web Development Program",
       "duration": "2024 – 2025",
-      "description": "Intensive web development training covering PHP, Laravel, React, and agile methodologies."
+      "description": "Intensive web development training covering PHP, Laravel, React, and agile methodologies.",
+      "tags": ["Laravel", "PHP", "React", "Agile"]
     }
   ],
   "tools": {

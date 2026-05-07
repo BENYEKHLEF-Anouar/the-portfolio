@@ -5,13 +5,17 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ContactCTA from '../components/ContactCTA.jsx';
-import data from '../data/profile.json';
+import { useLanguage } from '../i18n/LanguageContext.jsx';
+import { translations } from '../i18n/translations.js';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import Navbar from '../components/Navbar.jsx';
 
 const HomePage = () => {
+  const { language, data } = useLanguage();
+  const t = translations[language].home;
+
   const [weather, setWeather] = useState(null);
   const [currentTime, setCurrentTime] = useState('');
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -19,7 +23,7 @@ const HomePage = () => {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      setCurrentTime(now.toLocaleTimeString('en-US', {
+      setCurrentTime(now.toLocaleTimeString(language === 'fr' ? 'fr-FR' : 'en-US', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
@@ -44,12 +48,12 @@ const HomePage = () => {
         const response = await fetch(
           `https://api.open-meteo.com/v1/forecast?latitude=35.7595&longitude=-5.8340&current_weather=true`
         );
-        const data = await response.json();
-        if (data.current_weather) {
-          const weatherCode = data.current_weather.weathercode;
+        const weatherData = await response.json();
+        if (weatherData.current_weather) {
+          const weatherCode = weatherData.current_weather.weathercode;
           const condition = getWeatherCondition(weatherCode);
           setWeather({
-            temp: Math.round(data.current_weather.temperature),
+            temp: Math.round(weatherData.current_weather.temperature),
             condition: condition,
           });
         } else {
@@ -71,7 +75,7 @@ const HomePage = () => {
       clearInterval(timeInterval);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [language]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -86,6 +90,26 @@ const HomePage = () => {
     }
   };
 
+  // Editorial Logic: Split headline into exactly 3 balanced lines
+  const renderHeadline = (text) => {
+    const cleanText = text.replace(/\.\s*$/, '');
+    const words = cleanText.split(' ');
+    
+    const lastWord = words.pop(); // "experiences" or "évolutives"
+    
+    const breakIndex = Math.max(2, Math.floor(words.length / 2));
+    const line1 = words.slice(0, breakIndex).join(' ');
+    const line2 = words.slice(breakIndex).join(' ');
+    
+    return (
+      <>
+        {line1}<br />
+        {line2}<br />
+        {lastWord}<span style={{ color: '#E85D2F' }}>.</span>
+      </>
+    );
+  };
+
   return (
     <div style={{ paddingTop: 10 }}>
       <Navbar />
@@ -95,14 +119,13 @@ const HomePage = () => {
         style={{ padding: '50px 0 100px' }}
       >
         <div className="page-container-wide">
-          <div 
+          <div
             className="hero-flex-container"
             style={{
               display: 'flex',
               gap: 48,
               alignItems: 'center',
               justifyContent: 'center',
-              flexWrap: 'wrap',
             }}
           >
             <div
@@ -113,21 +136,22 @@ const HomePage = () => {
                 borderRadius: 15,
                 overflow: 'hidden',
                 flexShrink: 0,
+                transform: 'translateY(-20px)', // Raises the image slightly
               }}
             >
               <img
                 src={data.profilePicture}
                 alt={data.name}
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
+                style={{
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'cover',
-                  objectPosition: 'center 80%' 
+                  objectPosition: 'center 80%'
                 }}
               />
             </div>
 
-            <div className="hero-right-side" style={{ paddingTop: 0, minWidth: 320 }}>
+            <div className="hero-right-side" style={{ paddingTop: 0, width: 560, flexShrink: 1 }}>
               <p className="hero-role-label" style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontSize: '14px',
@@ -140,21 +164,25 @@ const HomePage = () => {
               </p>
 
               <h1 className="hero-main-title" style={{
-                fontSize: 'clamp(3rem, 5.5vw, 4.5rem)',
+                fontFamily: '"Plus Jakarta Sans", sans-serif',
+                fontStyle: 'normal',
                 fontWeight: 400,
-                lineHeight: 1.05,
-                letterSpacing: '-0.04em',
-                color: '#111111',
+                fontSize: '68px',
+                lineHeight: '73px',
+                color: 'rgb(26, 26, 24)',
                 marginBottom: 24,
-                maxWidth: '850px',
+                maxWidth: '560px',
               }}>
-                I build fast, scalable<br />web experiences<span style={{ color: '#E85D2F' }}>.</span>
+                {renderHeadline(data.headline)}
               </h1>
 
               <p className="hero-bio-text" style={{
-                fontSize: '1.0625rem',
-                lineHeight: 1.5,
-                color: '#1A1A1A',
+                fontFamily: '"Plus Jakarta Sans", sans-serif',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                fontSize: '16px',
+                lineHeight: '26px',
+                color: 'rgb(26, 26, 24)',
                 marginBottom: 28,
                 maxWidth: '580px',
               }}>
@@ -203,7 +231,7 @@ const HomePage = () => {
                     textTransform: 'uppercase',
                     marginBottom: 2,
                     opacity: 0.95,
-                  }}>TANGIER, MOROCCO</div>
+                  }}>{data.location.toUpperCase()}</div>
                   <div style={{
                     fontSize: '0.7rem',
                     fontWeight: 400,
@@ -257,7 +285,7 @@ const HomePage = () => {
             marginBottom: 40,
             letterSpacing: '-0.02em',
           }}>
-            Selected work
+            {t.selectedWork}
           </h2>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -269,13 +297,13 @@ const HomePage = () => {
                 const gridTemplateColumns = pair.length === 1 ? '1fr' : (i % 4 === 0 ? '7fr 5fr' : '5fr 7fr');
 
                 projectRows.push(
-                  <div 
-                    key={i} 
+                  <div
+                    key={i}
                     className="work-row-grid"
-                    style={{ 
-                      display: 'grid', 
-                      '--desktop-grid': gridTemplateColumns, 
-                      gap: 16 
+                    style={{
+                      display: 'grid',
+                      '--desktop-grid': gridTemplateColumns,
+                      gap: 16
                     }}
                   >
                     {pair.map((project) => {
@@ -343,21 +371,21 @@ const HomePage = () => {
         <div className="page-container-wide">
           <div className="stack-layout">
             <div className="stack-header">
-              <h2 className="stack-title">Stack</h2>
-              <p className="stack-subtitle">Tools I reach for every day.</p>
+              <h2 className="stack-title">{t.stackTitle}</h2>
+              <p className="stack-subtitle">{t.stackSubtitle}</p>
               <p className="stack-description">
-                A curated selection of technologies I’ve mastered and rely on to build production-grade applications.
+                {t.stackDescription}
               </p>
             </div>
 
             <div className="stack-spec-list">
               {[
-                { num: '01', icon: Layers, title: 'Main Frameworks', desc: 'The backbone of my application architecture.', tools: ['React', 'Next.js', 'Laravel'] },
-                { num: '02', icon: Layout, title: 'Frontend & UI', desc: 'Crafting fluid, responsive, and accessible interfaces.', tools: ['TypeScript', 'Tailwind CSS', 'Framer Motion', 'Alpine.js'] },
-                { num: '03', icon: Database, title: 'Backend & Data', desc: 'Scalable server logic and optimized database schemas.', tools: ['Node.js', 'PostgreSQL', 'MySQL', 'Rest API'] },
-                { num: '04', icon: Server, title: 'Infrastructure', desc: 'Automated deployment pipelines and containerization.', tools: ['Docker', 'Vercel', 'GitHub Actions', 'Git'] },
-                { num: '05', icon: PenTool, title: 'Design & Planning', desc: 'Systems thinking from wireframes to final handoff.', tools: ['Figma', 'Notion'] },
-                { num: '06', icon: BarChart, title: 'Analytics', desc: 'Measuring performance and search visibility.', tools: ['Google Analytics', 'Google Search Console'] }
+                { num: '01', icon: Layers, title: t.stackRow.frameworks, desc: t.stackRow.frameworksDesc, tools: ['React', 'Next.js', 'Laravel'] },
+                { num: '02', icon: Layout, title: t.stackRow.frontend, desc: t.stackRow.frontendDesc, tools: ['TypeScript', 'Tailwind CSS', 'Framer Motion', 'Alpine.js'] },
+                { num: '03', icon: Database, title: t.stackRow.backend, desc: t.stackRow.backendDesc, tools: ['Node.js', 'PostgreSQL', 'MySQL', 'Rest API'] },
+                { num: '04', icon: Server, title: t.stackRow.infra, desc: t.stackRow.infraDesc, tools: ['Docker', 'Vercel', 'GitHub Actions', 'Git'] },
+                { num: '05', icon: PenTool, title: t.stackRow.design, desc: t.stackRow.designDesc, tools: ['Figma', 'Notion'] },
+                { num: '06', icon: BarChart, title: t.stackRow.analytics, desc: t.stackRow.analyticsDesc, tools: ['Google Analytics', 'Google Search Console'] }
               ].map((row, i) => (
                 <motion.div
                   key={i}
@@ -396,46 +424,46 @@ const HomePage = () => {
       >
         <div className="page-container-wide">
           <div className="exp-header">
-            <p className="exp-eyebrow">Experience</p>
-            <h2 className="exp-title">Path so far.</h2>
+            <p className="exp-eyebrow">{t.experience.title}</p>
+            <h2 className="exp-title">{t.experience.subtitle}</h2>
             <p className="exp-subtitle">
-              Roles and milestones that shaped how I build for users and teams.
+              {t.experience.description}
             </p>
           </div>
 
           <div className="exp-timeline">
             <div className="exp-line" />
 
-            {[
-              { side: 'right', icon: Rocket, date: '2025 — 2026', role: 'Mobile & Full-Stack Development Program', company: 'Solicode Tangier', desc: 'Advanced program focused on building high-performance mobile apps with Kotlin and full-stack systems using Laravel and Alpine.js. This program emphasizes real-world soft skills, from complex problem solving and client communication to intensive collaboration within high-performing agile teams.', tags: ['Laravel', 'Kotlin', 'Alpine.js', 'Scrum'] },
-              { side: 'left', icon: Briefcase, date: 'Juillet — Août 2025', role: 'Software Development Intern', company: 'Monzed OÜ', desc: 'Contributed to real-world client projects within a remote software consultancy — including key contributions to a powerful AI agentic IDE and the development of my personal project, Orbit.', tags: ['React', 'Vite', 'Supabase'] },
-              { side: 'right', icon: Star, date: '2024 — 2025', role: 'Full-Stack Web Development Program', company: 'Solicode Tangier', desc: 'Completed an intensive full-stack curriculum covering the essentials of web development — from core languages like HTML, CSS, and JavaScript to server-side logic with PHP and WordPress. This program focused on building deep technical knowledge through hands-on practice with real-world projects.', tags: ['HTML/CSS', 'JavaScript', 'PHP', 'WordPress'] },
-              { side: 'left', icon: GraduationCap, date: '2020 — 2021', role: 'Baccalauréat in Physics-Chemistry', company: 'Allal El Fassi High School', desc: 'Graduated with a scientific baccalauréat — a foundation that instilled analytical thinking and systematic problem-solving, skills I now apply daily in software engineering.', tags: [] }
-            ].map((entry, i) => (
-              <motion.div
-                key={i}
-                className={`exp-entry exp-entry--${entry.side}`}
-                initial={{ opacity: 0, x: entry.side === 'right' ? 20 : -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-              >
-                <div className="exp-node">
-                  <entry.icon size={14} strokeWidth={2} />
-                </div>
-                <div className="exp-card">
-                  <span className="exp-date">{entry.date}</span>
-                  <h3 className="exp-role">{entry.role}</h3>
-                  <p className="exp-company">{entry.company}</p>
-                  <p className="exp-desc">{entry.desc}</p>
-                  <div className="exp-tags">
-                    {entry.tags.map((tag, ti) => (
-                      <span key={ti} className="exp-tag">{tag}</span>
-                    ))}
+            {data.experience.map((entry, i) => {
+              const icons = [Rocket, Briefcase, Star, GraduationCap];
+              const IconComponent = icons[i % icons.length];
+              const side = i % 2 === 0 ? 'right' : 'left';
+              return (
+                <motion.div
+                  key={i}
+                  className={`exp-entry exp-entry--${side}`}
+                  initial={{ opacity: 0, x: side === 'right' ? 20 : -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                >
+                  <div className="exp-node" style={{ background: '#1A1A1A', color: '#fff', borderColor: '#1A1A1A' }}>
+                    <IconComponent size={14} strokeWidth={2} />
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="exp-card">
+                    <span className="exp-date">{entry.duration || entry.date}</span>
+                    <h3 className="exp-role">{entry.role}</h3>
+                    <p className="exp-company">{entry.company}</p>
+                    <p className="exp-desc">{entry.description || entry.desc}</p>
+                    <div className="exp-tags">
+                      {(entry.tags || []).map((tag, ti) => (
+                        <span key={ti} className="exp-tag">{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </motion.section>

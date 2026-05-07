@@ -3,9 +3,12 @@ import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
 import { ArrowUpRight, ArrowLeft, ExternalLink, Cpu, ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ContactCTA from '../components/ContactCTA.jsx';
-import data from '../data/profile.json';
+import { useLanguage } from '../i18n/LanguageContext.jsx';
+import { translations } from '../i18n/translations.js';
 
 const ProjectDetailPage = () => {
+  const { language, data } = useLanguage();
+  const t = translations[language].project;
   const { id } = useParams();
   const project = data.work.find((p) => p.id === id);
   const [activeSection, setActiveSection] = React.useState('overview');
@@ -81,7 +84,7 @@ const ProjectDetailPage = () => {
           }}
         >
           <ArrowLeft size={16} strokeWidth={1.5} />
-          <span>All work</span>
+          <span>{t.allWork}</span>
         </Link>
       </header>
 
@@ -128,7 +131,7 @@ const ProjectDetailPage = () => {
                   className={`pd-action-btn pd-action-btn--primary${project.link === '#' ? ' pd-action-btn--disabled' : ''}`}
                 >
                   <ExternalLink size={14} strokeWidth={2} />
-                  Live Demo
+                  {t.liveDemo}
                 </a>
                 <a
                   href={project.github !== '#' ? project.github : undefined}
@@ -139,7 +142,7 @@ const ProjectDetailPage = () => {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                   </svg>
-                  Source Code
+                  {t.sourceCode}
                 </a>
               </div>
             </motion.div>
@@ -163,7 +166,7 @@ const ProjectDetailPage = () => {
                 />
               )}
               <div style={{ textAlign: 'right' }}>
-                <p className="pd-meta-label">Selected Project</p>
+                <p className="pd-meta-label">{t.selectedProject}</p>
                 <p className="pd-meta-value" style={{ fontSize: '18px' }}>{project.year}</p>
               </div>
             </motion.div>
@@ -182,13 +185,13 @@ const ProjectDetailPage = () => {
               maxHeight: 'calc(100vh - 140px)',
               overflowY: 'auto'
             }}>
-              <p className="pd-meta-label" style={{ marginBottom: '24px' }}>On this page</p>
+              <p className="pd-meta-label" style={{ marginBottom: '24px' }}>{t.onThisPage}</p>
               <nav className="pd-summary-nav">
                 <a
                   href="#overview"
                   className={`pd-summary-link ${activeSection === 'overview' ? 'active' : ''}`}
                 >
-                  01 — Overview
+                  01 — {t.overview}
                 </a>
                 {project.sections && project.sections.map((section, i) => (
                   <a
@@ -203,7 +206,7 @@ const ProjectDetailPage = () => {
                   href="#specs"
                   className={`pd-summary-link ${activeSection === 'specs' ? 'active' : ''}`}
                 >
-                  0{(project.sections?.length || 0) + 2} — Specs
+                  0{(project.sections?.length || 0) + 2} — {t.specs}
                 </a>
               </nav>
             </div>
@@ -214,7 +217,7 @@ const ProjectDetailPage = () => {
           <main className="pd-main-body">
             {/* Inline Infrastructure Stack */}
             <motion.div className="pd-inline-stack" {...fadeInUp}>
-              <p className="pd-meta-label">Infrastructure</p>
+              <p className="pd-meta-label">{t.infrastructure}</p>
               <div className="pd-inline-stack-list">
                 {project.tags.map((tag, i) => (
                   <div key={i} className="pd-inline-stack-item">
@@ -227,8 +230,8 @@ const ProjectDetailPage = () => {
 
             {/* Overview Section */}
             <motion.div id="overview" className="pd-section" {...fadeInUp}>
-              <span className="pd-section-label">01 — Overview</span>
-              <h2 className="pd-section-title">The Project Summary</h2>
+              <span className="pd-section-label">01 — {t.overview}</span>
+              <h2 className="pd-section-title">{t.projectSummary}</h2>
               <div className="pd-section-body">
                 <p>{project.description}</p>
               </div>
@@ -254,11 +257,11 @@ const ProjectDetailPage = () => {
             <motion.section id="specs" className="pd-specs-section" {...fadeInUp}>
               <div className="pd-specs-grid">
                 <div className="pd-spec-item">
-                  <p className="pd-meta-label">Role</p>
+                  <p className="pd-meta-label">{t.role}</p>
                   <p className="pd-meta-value">{project.category}</p>
                 </div>
                 <div className="pd-spec-item">
-                  <p className="pd-meta-label">Company</p>
+                  <p className="pd-meta-label">{t.company}</p>
                   <p className="pd-meta-value">
                     {project.companyLink ? (
                       <a href={project.companyLink} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '1px solid currentColor' }}>
@@ -268,7 +271,7 @@ const ProjectDetailPage = () => {
                   </p>
                 </div>
                 <div className="pd-spec-item">
-                  <p className="pd-meta-label">Year</p>
+                  <p className="pd-meta-label">{t.year}</p>
                   <p className="pd-meta-value">{project.year}</p>
                 </div>
 
@@ -281,7 +284,7 @@ const ProjectDetailPage = () => {
                   rel="noopener noreferrer"
                   className="pd-live-button"
                 >
-                  Visit Live Site <ArrowUpRight size={18} />
+                  {t.visitSite} <ArrowUpRight size={18} />
                 </a>
               )}
             </motion.section>

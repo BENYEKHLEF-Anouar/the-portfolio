@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
-import data from '../data/profile.json';
+import { useLanguage } from '../i18n/LanguageContext.jsx';
+import { translations } from '../i18n/translations.js';
 
 const RESET_DELAY = 8000; // 8 seconds
 
 const ContactCTA = () => {
+  const { language, data } = useLanguage();
+  const t = translations[language].contact;
   const [form, setForm]       = useState({ name: '', email: '', message: '' });
   const [focused, setFocused] = useState(null);
   const [errors, setErrors]   = useState({});
@@ -22,9 +25,9 @@ const ContactCTA = () => {
 
   /* ── Validate a single field */
   const validateField = (name, value) => {
-    if (!value.trim()) return 'This field is required.';
+    if (!value.trim()) return t.validation.required;
     if (name === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-      return 'Please enter a valid email address.';
+      return t.validation.email;
     return '';
   };
 
@@ -62,9 +65,9 @@ const ContactCTA = () => {
     if (Object.keys(errs).some((k) => errs[k])) return; // block submit
 
     /* Fire mailto */
-    const subject = encodeURIComponent(`Portfolio contact from ${form.name}`);
+    const subject = encodeURIComponent(`${t.emailSubject} ${form.name}`);
     const body    = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
+      `${t.nameLabel}: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
     );
     window.location.href = `mailto:${data.email}?subject=${subject}&body=${body}`;
 
@@ -111,11 +114,10 @@ const ContactCTA = () => {
           <div className="cta-top-row">
             <div className="cta-text-block">
               <h2 className="cta-title">
-                Let's build something together<span className="accent-dot" />
+                {t.title}<span className="accent-dot" />
               </h2>
               <p className="cta-body">
-                Always drawn to interesting problems. If you're building
-                something and want to think through it together, let's talk.
+                {t.body}
               </p>
               <div className="cta-socials">
                 <a href="tel:077130601" className="cta-social-link">
@@ -123,7 +125,7 @@ const ContactCTA = () => {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                   </svg>
-                  Phone
+                  {t.phone}
                 </a>
                 <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="cta-social-link">
                   {/* LinkedIn SVG */}
@@ -153,9 +155,9 @@ const ContactCTA = () => {
               <div className="cta-success-icon-wrap">
                 <CheckCircle size={26} strokeWidth={1.5} />
               </div>
-              <p className="cta-success-title">Message sent.</p>
+              <p className="cta-success-title">{t.successTitle}</p>
               <p className="cta-success-body">
-                Thanks for reaching out — I'll get back to you shortly.
+                {t.successBody}
               </p>
               <div className="cta-countdown-bar-wrap">
                 <div
@@ -164,7 +166,7 @@ const ContactCTA = () => {
                 />
               </div>
               <p className="cta-countdown-label">
-                Form resets in <strong>{countdown}s</strong>
+                {t.formResets.replace('{n}', countdown)}
               </p>
             </div>
           ) : (
@@ -175,7 +177,7 @@ const ContactCTA = () => {
 
                 {/* Name */}
                 <div className={fieldState('name')}>
-                  <label className="cta-label" htmlFor="cf-name">Name</label>
+                  <label className="cta-label" htmlFor="cf-name">{t.nameLabel}</label>
                   <input
                     id="cf-name" name="name" type="text" autoComplete="name"
                     className="cta-input"
@@ -183,7 +185,7 @@ const ContactCTA = () => {
                     onChange={handleChange}
                     onFocus={() => setFocused('name')}
                     onBlur={handleBlur}
-                    placeholder="Your name"
+                    placeholder={t.namePlaceholder}
                   />
                   {touched.name && errors.name && (
                     <span className="cta-error-msg">
@@ -194,7 +196,7 @@ const ContactCTA = () => {
 
                 {/* Email */}
                 <div className={fieldState('email')}>
-                  <label className="cta-label" htmlFor="cf-email">Email</label>
+                  <label className="cta-label" htmlFor="cf-email">{t.emailLabel}</label>
                   <input
                     id="cf-email" name="email" type="email" autoComplete="email"
                     className="cta-input"
@@ -202,7 +204,7 @@ const ContactCTA = () => {
                     onChange={handleChange}
                     onFocus={() => setFocused('email')}
                     onBlur={handleBlur}
-                    placeholder="you@example.com"
+                    placeholder={t.emailPlaceholder}
                   />
                   {touched.email && errors.email && (
                     <span className="cta-error-msg">
@@ -214,7 +216,7 @@ const ContactCTA = () => {
 
               {/* Message */}
               <div className={`${fieldState('message')} cta-field--full`}>
-                <label className="cta-label" htmlFor="cf-message">Message</label>
+                <label className="cta-label" htmlFor="cf-message">{t.messageLabel}</label>
                 <textarea
                   id="cf-message" name="message"
                   rows={5}
@@ -223,7 +225,7 @@ const ContactCTA = () => {
                   onChange={handleChange}
                   onFocus={() => setFocused('message')}
                   onBlur={handleBlur}
-                  placeholder="Tell me what you're working on…"
+                  placeholder={t.messagePlaceholder}
                 />
                 {touched.message && errors.message && (
                   <span className="cta-error-msg">
@@ -235,7 +237,7 @@ const ContactCTA = () => {
               {/* Submit */}
               <div className="cta-form-footer">
                 <button type="submit" className="cta-send-btn">
-                  <span>Send message</span>
+                  <span>{t.sendButton}</span>
                   <Send size={14} strokeWidth={2} />
                 </button>
               </div>

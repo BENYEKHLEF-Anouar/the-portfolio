@@ -6,6 +6,7 @@ import Footer from './components/Footer.jsx';
 import HomePage from './pages/HomePage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import ProjectDetailPage from './pages/ProjectDetailPage.jsx';
+import { LanguageProvider } from './i18n/LanguageContext.jsx';
 
 const scrollState = { shouldScroll: false, y: 0 };
 const scrollPositions = {};
@@ -120,7 +121,7 @@ function App() {
   const isProjectDetail = location.pathname.startsWith('/work/') && location.pathname.length > 6;
 
   return (
-    <>
+    <LanguageProvider>
       <ScrollToHash />
       <main>
         <AnimatePresence 
@@ -160,7 +161,7 @@ function App() {
         </AnimatePresence>
       </main>
       <Footer className={isAboutPage || isProjectDetail ? 'footer-about-page' : ''} />
-    </>
+    </LanguageProvider>
   );
 }
 

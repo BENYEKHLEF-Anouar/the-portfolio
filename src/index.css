@@ -2403,9 +2403,510 @@ body::-webkit-scrollbar {
   }
 }
 
-/* ──────────────────────────────────────────────────────────── */
-/* Mobile Responsiveness Overrides for Production */
-/* ──────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════ */
+/* MOBILE RESPONSIVE SYSTEM — All Breakpoints                  */
+/* ═══════════════════════════════════════════════════════════ */
+
+/* ─── Work Grid: always use CSS var for desktop ─────────────── */
+.work-row-grid {
+  grid-template-columns: var(--desktop-grid, 1fr 1fr);
+}
+
+/* ─── Navbar Mobile Toggle ───────────────────────────────────── */
+.nav-mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #1a1a1a;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BREAKPOINT: Tablet — ≤ 1024px
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+
+  /* About Page: collapse 2-col experience to 1-col */
+  .about-experience-section {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .exp-sidebar h2 {
+    font-size: 24px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BREAKPOINT: Small Tablet — ≤ 968px
+   Collapse hero side-by-side to stacked
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 968px) {
+  .hero-flex-container {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 32px !important;
+  }
+
+  .hero-right-side {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BREAKPOINT: Mobile — ≤ 768px
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── Global ────────────────────────────────────────────────── */
+  .page-container-wide {
+    padding: 0 20px !important;
+  }
+
+  /* ── Navbar ────────────────────────────────────────────────── */
+  .nav-desktop {
+    display: none !important;
+  }
+
+  .nav-mobile-toggle {
+    display: flex !important;
+  }
+
+  /* ── Hero Section ──────────────────────────────────────────── */
+  .hero-section {
+    padding: 32px 0 64px !important;
+  }
+
+  .hero-flex-container {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 24px !important;
+  }
+
+  .hero-img-box {
+    width: 160px !important;
+    height: 200px !important;
+    border-radius: 16px !important;
+    transform: translateY(0) !important;
+  }
+
+  .hero-role-label {
+    font-size: 11px !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 16px !important;
+  }
+
+  .hero-main-title {
+    font-size: 40px !important;
+    line-height: 46px !important;
+    letter-spacing: -0.02em !important;
+    margin-bottom: 20px !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+  }
+
+  .hero-bio-text {
+    font-size: 15px !important;
+    line-height: 24px !important;
+    margin-bottom: 24px !important;
+    max-width: 100% !important;
+  }
+
+  .location-weather-wrapper {
+    font-size: 13px !important;
+  }
+
+  /* ── Work Section ──────────────────────────────────────────── */
+  .work-row-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .work-card-v2 {
+    border-radius: 28px !important;
+    min-height: auto !important;
+    padding: 28px 20px !important;
+  }
+
+  .wc-headline {
+    font-size: 22px !important;
+    line-height: 1.25 !important;
+  }
+
+  .wc-images {
+    height: 240px !important;
+    padding-top: 28px !important;
+    margin-top: auto !important;
+  }
+
+  .wc-img-wrap {
+    border-radius: 12px !important;
+    transform-origin: bottom center !important;
+  }
+
+  .wc-img-0,
+  .wc-img-2,
+  .wc-img-solo-0,
+  .wc-img-solo-1,
+  .wc-img-single {
+    width: 85% !important;
+  }
+
+  .wc-img-1 {
+    width: 88% !important;
+    z-index: 10 !important;
+  }
+
+  /* ── Stack Section ─────────────────────────────────────────── */
+  .stack-section {
+    padding: 60px 0 !important;
+  }
+
+  .stack-layout {
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+
+  .stack-title {
+    font-size: 28px !important;
+  }
+
+  .stack-subtitle {
+    font-size: 18px !important;
+  }
+
+  .stack-description {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  .stack-row {
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 20px 0 !important;
+  }
+
+  .stack-row-lead {
+    gap: 10px !important;
+  }
+
+  .stack-row-tools {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .stack-pill {
+    font-size: 11px !important;
+    padding: 4px 10px !important;
+  }
+
+  /* ── Experience Timeline ───────────────────────────────────── */
+  .exp-section {
+    padding: 60px 0 !important;
+  }
+
+  .exp-header {
+    margin-bottom: 48px !important;
+  }
+
+  .exp-title {
+    font-size: 36px !important;
+    line-height: 1.1 !important;
+  }
+
+  .exp-timeline {
+    padding: 0 !important;
+  }
+
+  .exp-line {
+    left: 16px !important;
+  }
+
+  .exp-entry {
+    padding-left: 48px !important;
+    padding-right: 0 !important;
+    margin-bottom: 40px !important;
+    width: 100% !important;
+    left: auto !important;
+    right: auto !important;
+    text-align: left !important;
+  }
+
+  .exp-entry--left,
+  .exp-entry--right {
+    left: 0 !important;
+    right: 0 !important;
+    padding-left: 48px !important;
+    text-align: left !important;
+  }
+
+  .exp-node {
+    left: 0 !important;
+    right: auto !important;
+    transform: translateX(0) !important;
+  }
+
+  .exp-card {
+    text-align: left !important;
+  }
+
+  .exp-date {
+    font-size: 12px !important;
+  }
+
+  .exp-role {
+    font-size: 18px !important;
+  }
+
+  .exp-tags {
+    justify-content: flex-start !important;
+  }
+
+  /* ── About Page ────────────────────────────────────────────── */
+  .about-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  .about-title {
+    font-size: 40px !important;
+    line-height: 1.1 !important;
+  }
+
+  .about-bio p {
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+  }
+
+  .about-photos-desktop {
+    display: none !important;
+  }
+
+  .about-photos-mobile {
+    display: block !important;
+    margin: 40px 0 !important;
+  }
+
+  .photo-stack {
+    height: 240px !important;
+  }
+
+  .photo-item img {
+    width: 180px !important;
+    height: 240px !important;
+  }
+
+  .about-experience-section {
+    padding: 48px 0 !important;
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  .exp-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    padding: 20px 0 !important;
+  }
+
+  .exp-col-logo {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .exp-col-year {
+    font-size: 12px !important;
+    color: #9A9A8E !important;
+  }
+
+  /* ── Contact CTA ───────────────────────────────────────────── */
+  .cta-section {
+    padding: 40px 0 !important;
+  }
+
+  .cta-card {
+    padding: 32px 24px !important;
+    border-radius: 24px !important;
+  }
+
+  .cta-top-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+  }
+
+  .cta-title {
+    font-size: 28px !important;
+    line-height: 1.15 !important;
+  }
+
+  .cta-body {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  .cta-socials {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  .cta-form-row {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .cta-field {
+    width: 100% !important;
+  }
+
+  .cta-send-btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* ── Project Detail Page ───────────────────────────────────── */
+  .pd-hero {
+    padding-top: 24px !important;
+    padding-bottom: 40px !important;
+  }
+
+  .pd-hero-grid {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 32px !important;
+    margin-bottom: 40px !important;
+  }
+
+  .pd-title {
+    font-size: 30px !important;
+    line-height: 1.15 !important;
+  }
+
+  .pd-meta-top {
+    font-size: 11px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .pd-hero-side-meta {
+    text-align: left !important;
+    width: 100% !important;
+    align-items: flex-start !important;
+  }
+
+  .pd-action-buttons {
+    flex-direction: column !important;
+    gap: 10px !important;
+    margin-top: 24px !important;
+  }
+
+  .pd-action-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 14px 20px !important;
+    font-size: 14px !important;
+  }
+
+  .pd-detail-layout {
+    padding-top: 40px !important;
+    gap: 40px !important;
+    margin-bottom: 60px !important;
+  }
+
+  .pd-section {
+    margin-bottom: 48px !important;
+  }
+
+  .pd-section-title {
+    font-size: 22px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .pd-section-body {
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 28px !important;
+  }
+
+  .pd-image-large {
+    margin-top: 20px !important;
+    border-radius: 12px !important;
+  }
+
+  .pd-specs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .pd-spec-item {
+    padding-bottom: 20px !important;
+    border-bottom: 1px solid #EDEDEB !important;
+  }
+
+  .pd-inline-stack {
+    margin-bottom: 32px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BREAKPOINT: Small Mobile — ≤ 480px
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+
+  .page-container-wide {
+    padding: 0 16px !important;
+  }
+
+  .hero-main-title {
+    font-size: 34px !important;
+    line-height: 40px !important;
+  }
+
+  .hero-img-box {
+    width: 140px !important;
+    height: 175px !important;
+  }
+
+  .work-card-v2 {
+    padding: 24px 16px !important;
+    border-radius: 20px !important;
+  }
+
+  .wc-headline {
+    font-size: 19px !important;
+  }
+
+  .about-title {
+    font-size: 34px !important;
+  }
+
+  .exp-title {
+    font-size: 30px !important;
+  }
+
+  .cta-title {
+    font-size: 24px !important;
+  }
+
+  .cta-card {
+    padding: 24px 16px !important;
+  }
+
+  .pd-title {
+    font-size: 26px !important;
+  }
+
+  .stack-title {
+    font-size: 24px !important;
+  }
+}
+
 
 /* Home Page Work Grid */
 .work-row-grid {

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Volume2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import data from '../data/profile.json';
 import ContactCTA from '../components/ContactCTA';
+import { useLanguage } from '../i18n/LanguageContext.jsx';
+import { translations } from '../i18n/translations.js';
 
 const PhotoItem = ({ card, index, cards, moveToEnd }) => {
   const isTop = index === 0;
@@ -77,14 +78,22 @@ const PhotoItem = ({ card, index, cards, moveToEnd }) => {
 };
 
 const AboutPage = () => {
+  const { language, data } = useLanguage();
+  const t = translations[language].about;
+
   const initialCards = [
-    { id: 1, img: data.profilePicture, caption: "Tangier creative affairs", rot: -2, x: 0, y: 0 },
-    { id: 2, img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600&auto=format&fit=crop", caption: "Deep work sessions", rot: 3, x: 25, y: -15 },
-    { id: 3, img: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=600&auto=format&fit=crop", caption: "Design & Craft", rot: -5, x: -20, y: 25 },
-    { id: 4, img: "https://images.unsplash.com/photo-1545235617-9465d2a55698?q=80&w=600&auto=format&fit=crop", caption: "Editorial vibes", rot: 6, x: 35, y: 20 },
+    { id: 1, img: data.profilePicture, caption: t.photos.tangier, rot: -2, x: 0, y: 0 },
+    { id: 2, img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600&auto=format&fit=crop", caption: t.photos.deepWork, rot: 3, x: 25, y: -15 },
+    { id: 3, img: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=600&auto=format&fit=crop", caption: t.photos.design, rot: -5, x: -20, y: 25 },
+    { id: 4, img: "https://images.unsplash.com/photo-1545235617-9465d2a55698?q=80&w=600&auto=format&fit=crop", caption: t.photos.editorial, rot: 6, x: 35, y: 20 },
   ];
 
   const [cards, setCards] = useState(initialCards);
+
+  // Sync cards when language changes
+  useEffect(() => {
+    setCards(initialCards);
+  }, [language]);
 
   const moveToEnd = (from) => {
     const newCards = [...cards];
@@ -107,7 +116,6 @@ const AboutPage = () => {
 
   return (
     <div className="about-page">
-      {/* ── Close Button ──────────────────────────────── */}
       <Link
         to="/"
         className="about-close-btn"
@@ -131,13 +139,13 @@ const AboutPage = () => {
       <div className="page-container-wide">
         <div className="about-layout">
           <motion.div className="about-content" variants={staggerContainer} initial="initial" animate="animate">
-            <motion.span className="about-mini-title" variants={fadeInUp}>About</motion.span>
+            <motion.span className="about-mini-title" variants={fadeInUp}>{t.title}</motion.span>
             <motion.h1 className="about-title" variants={fadeInUp}>
-              Hello, I'm Anouar<span className="accent-dot" />
+              {t.greeting}<span className="accent-dot" />
             </motion.h1>
 
             <motion.div className="about-phonetic" variants={fadeInUp}>
-              <span>/an·wahr/ — sounds like "un-war"</span>
+              <span>{t.phonetic}</span>
               <Volume2 size={14} className="phonetic-icon" />
             </motion.div>
 
@@ -152,7 +160,7 @@ const AboutPage = () => {
             </motion.div>
 
             <motion.div className="about-languages" variants={fadeInUp} style={{ marginTop: '48px' }}>
-              <h2 className="footer-label">Languages</h2>
+              <h2 className="footer-label">{t.languages}</h2>
               <div className="lang-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '32px', marginTop: '24px' }}>
                 {data.languages.map((lang, i) => (
                   <div key={i} className="lang-item">
@@ -164,7 +172,6 @@ const AboutPage = () => {
             </motion.div>
           </motion.div>
 
-          {/* Desktop Right Column: Interactive Photo Stack */}
           <div className="about-photos-container about-photos-desktop">
             <motion.div
               className="photo-stack"
@@ -178,7 +185,6 @@ const AboutPage = () => {
 
         </div>
 
-        {/* ── Full Width: Experience Section (Matched to Screenshot) ── */}
         <motion.section 
           className="about-experience-section"
           initial={{ opacity: 0, y: 40 }}
@@ -187,8 +193,8 @@ const AboutPage = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="exp-sidebar">
-            <h2>Experience</h2>
-            <p>Practical application of engineering and design principles across diverse projects.</p>
+            <h2>{t.experienceTitle}</h2>
+            <p>{t.experienceDesc}</p>
           </div>
           
           <div className="exp-main-list">
@@ -213,8 +219,6 @@ const AboutPage = () => {
           </div>
         </motion.section>
 
-
-        {/* ── Contact Section ── */}
         <motion.section 
           className="about-contact-section"
           initial={{ opacity: 0, y: 40 }}
