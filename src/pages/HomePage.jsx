@@ -90,22 +90,17 @@ const HomePage = () => {
     }
   };
 
-  // Editorial Logic: Split headline into exactly 3 balanced lines
+  // Editorial Logic: Split headline into 2 balanced lines
   const renderHeadline = (text) => {
     const cleanText = text.replace(/\.\s*$/, '');
     const words = cleanText.split(' ');
-    
-    const lastWord = words.pop(); // "experiences" or "évolutives"
-    
     const breakIndex = Math.max(2, Math.floor(words.length / 2));
     const line1 = words.slice(0, breakIndex).join(' ');
     const line2 = words.slice(breakIndex).join(' ');
-    
     return (
       <>
         {line1}<br />
-        {line2}<br />
-        {lastWord}<span style={{ color: '#E85D2F' }}>.</span>
+        {line2}<span style={{ color: '#E85D2F' }}>.</span>
       </>
     );
   };
