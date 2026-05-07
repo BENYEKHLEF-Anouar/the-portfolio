@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { translations } from '../i18n/translations.js';
 
@@ -12,7 +12,7 @@ const ContactCTA = () => {
   const [focused, setFocused] = useState(null);
   const [errors, setErrors]   = useState({});
   const [touched, setTouched] = useState({});
-  const [status, setStatus]   = useState('idle'); // 'idle' | 'success'
+  const [status, setStatus]   = useState('idle'); // 'idle' | 'submitting' | 'success' | 'error'
   const [countdown, setCountdown] = useState(8);
   const timerRef  = useRef(null);
   const countRef  = useRef(null);
@@ -56,7 +56,7 @@ const ContactCTA = () => {
     setFocused(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const allTouched = { name: true, email: true, message: true };
     setTouched(allTouched);
@@ -64,34 +64,50 @@ const ContactCTA = () => {
     setErrors(errs);
     if (Object.keys(errs).some((k) => errs[k])) return; // block submit
 
-    /* Fire mailto */
-    const subject = encodeURIComponent(`${t.emailSubject} ${form.name}`);
-    const body    = encodeURIComponent(
-      `${t.nameLabel}: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
-    );
-    window.location.href = `mailto:${data.email}?subject=${subject}&body=${body}`;
+    setStatus('submitting');
 
-    /* Show success + countdown */
-    setStatus('success');
-    setCountdown(8);
+    try {
+      const formData = new FormData(e.target);
+      formData.append("access_key", "0f52d4da-77d8-4ee7-8451-cfc995b1c016");
 
-    countRef.current = setInterval(() => {
-      setCountdown((c) => {
-        if (c <= 1) {
-          clearInterval(countRef.current);
-          return 0;
-        }
-        return c - 1;
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
       });
-    }, 1000);
 
-    timerRef.current = setTimeout(() => {
-      setForm({ name: '', email: '', message: '' });
-      setErrors({});
-      setTouched({});
-      setStatus('idle');
-      setCountdown(8);
-    }, RESET_DELAY);
+      const dataRes = await response.json();
+      
+      if (dataRes.success) {
+        /* Show success + countdown */
+        setStatus('success');
+        setCountdown(8);
+
+        countRef.current = setInterval(() => {
+          setCountdown((c) => {
+            if (c <= 1) {
+              clearInterval(countRef.current);
+              return 0;
+            }
+            return c - 1;
+          });
+        }, 1000);
+
+        timerRef.current = setTimeout(() => {
+          setForm({ name: '', email: '', message: '' });
+          setErrors({});
+          setTouched({});
+          setStatus('idle');
+          setCountdown(8);
+        }, RESET_DELAY);
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 5000);
+      }
+    } catch (err) {
+      console.error("Submission error:", err);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 5000);
+    }
   };
 
   const fieldState = (name) => {
@@ -150,24 +166,35 @@ const ContactCTA = () => {
           <div className="cta-divider" />
 
           {/* ── Success state */}
-          {status === 'success' ? (
-            <div className="cta-success">
+          {status === 'success' || status === 'error' ? (
+            <div className={`cta-success ${status === 'error' ? 'cta-error' : ''}`}>
               <div className="cta-success-icon-wrap">
-                <CheckCircle size={26} strokeWidth={1.5} />
+                {status === 'success' ? (
+                  <CheckCircle size={26} strokeWidth={1.5} />
+                ) : (
+                  <AlertCircle size={26} strokeWidth={1.5} style={{ color: '#E85D2F' }} />
+                )}
               </div>
-              <p className="cta-success-title">{t.successTitle}</p>
+              <p className="cta-success-title">
+                {status === 'success' ? t.successTitle : t.errorTitle}
+              </p>
               <p className="cta-success-body">
-                {t.successBody}
+                {status === 'success' ? t.successBody : t.errorBody}
               </p>
-              <div className="cta-countdown-bar-wrap">
-                <div
-                  className="cta-countdown-bar"
-                  style={{ animationDuration: `${RESET_DELAY}ms` }}
-                />
-              </div>
-              <p className="cta-countdown-label">
-                {t.formResets.replace('{n}', countdown)}
-              </p>
+              
+              {status === 'success' && (
+                <>
+                  <div className="cta-countdown-bar-wrap">
+                    <div
+                      className="cta-countdown-bar"
+                      style={{ animationDuration: `${RESET_DELAY}ms` }}
+                    />
+                  </div>
+                  <p className="cta-countdown-label">
+                    {t.formResets.replace('{n}', countdown)}
+                  </p>
+                </>
+              )}
             </div>
           ) : (
 
@@ -236,9 +263,19 @@ const ContactCTA = () => {
 
               {/* Submit */}
               <div className="cta-form-footer">
-                <button type="submit" className="cta-send-btn">
-                  <span>{t.sendButton}</span>
-                  <Send size={14} strokeWidth={2} />
+                <button 
+                  type="submit" 
+                  className="cta-send-btn"
+                  disabled={status === 'submitting'}
+                >
+                  <span>
+                    {status === 'submitting' ? t.sendingButton : t.sendButton}
+                  </span>
+                  {status === 'submitting' ? (
+                    <Loader2 size={14} strokeWidth={2} className="cta-spin" />
+                  ) : (
+                    <Send size={14} strokeWidth={2} />
+                  )}
                 </button>
               </div>
             </form>

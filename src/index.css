@@ -112,6 +112,11 @@ body::-webkit-scrollbar {
   animation: blink 1s step-start infinite;
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 .accent-dot::after {
   content: '.';
   color: #E85D2F;
@@ -759,6 +764,23 @@ body::-webkit-scrollbar {
   display: block;
 }
 
+.cta-send-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: #1A1A1A;
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 11px 22px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.01em;
+}
+
 .pd-footer-nav {
   padding: 140px 0;
   border-top: 1px solid #EDEDEB;
@@ -1141,7 +1163,7 @@ body::-webkit-scrollbar {
 .cta-card {
   /* background: #fff; */
   background: #F4F4F4;
-  padding: 60px;
+  padding: 48px;
   border-radius: 16px;
   max-width: 1100px;
   margin: 0 auto;
@@ -1212,20 +1234,20 @@ body::-webkit-scrollbar {
 .cta-divider {
   height: 1px;
   background: #E4E4DC;
-  margin: 44px 0;
+  margin: 32px 0;
 }
 
 /* ── Form layout */
 .cta-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .cta-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 16px;
 }
 
 @media (max-width: 640px) {
@@ -1242,7 +1264,7 @@ body::-webkit-scrollbar {
 .cta-field {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 5px;
   position: relative;
 }
 
@@ -1268,13 +1290,13 @@ body::-webkit-scrollbar {
 /* ── Input & Textarea */
 .cta-input {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 400;
   color: #111111;
   background: #fff;
   border: 1px solid #E4E4DC;
   border-radius: 8px;
-  padding: 13px 16px;
+  padding: 10px 14px;
   outline: none;
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
   width: 100%;
@@ -1293,8 +1315,8 @@ body::-webkit-scrollbar {
 
 .cta-textarea {
   resize: vertical;
-  min-height: 130px;
-  line-height: 1.65;
+  min-height: 100px;
+  line-height: 1.6;
 }
 
 /* ── Send button */
@@ -3194,4 +3216,66 @@ body::-webkit-scrollbar {
   padding: 8px;
   align-items: center;
   justify-content: center;
+}
+/* --- Contact Success Animation ----------------- */
+@keyframes ctaFadeScale {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cta-success {
+  animation: ctaFadeScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cta-send-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* --- Contact Loading Spinner ------------------- */
+.cta-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+.cta-spin {
+  animation: rotation 1s linear infinite;
+}
+
+.cta-success-icon-wrap {
+  animation: ctaIconPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+@keyframes ctaIconPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-20deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+} 
+
+.cta-success-title {
+  animation: ctaFadeScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  opacity: 0;
+}
+
+.cta-success-body {
+  animation: ctaFadeScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
 }

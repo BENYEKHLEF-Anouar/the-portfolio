@@ -79,8 +79,11 @@ export const translations = {
       messageLabel: 'Message',
       messagePlaceholder: "Tell me what you're working on…",
       sendButton: 'Send message',
+      sendingButton: 'Sending...',
       successTitle: 'Message sent.',
       successBody: 'Thanks for reaching out — I\'ll get back to you shortly.',
+      errorTitle: 'Submission failed.',
+      errorBody: 'Something went wrong. Please try again or email me directly.',
       formResets: 'Form resets in {n}s',
       validation: {
         required: 'This field is required.',
@@ -169,8 +172,11 @@ export const translations = {
       messageLabel: 'Message',
       messagePlaceholder: 'Parlez-moi de votre projet…',
       sendButton: 'Envoyer le message',
+      sendingButton: 'Envoi en cours...',
       successTitle: 'Message envoyé.',
       successBody: 'Merci pour votre message — je vous répondrai rapidement.',
+      errorTitle: 'Échec de l\'envoi.',
+      errorBody: 'Un problème est survenu. Veuillez réessayer ou m\'envoyer un e-mail directement.',
       formResets: 'Réinitialisation dans {n}s',
       validation: {
         required: 'Ce champ est requis.',
