@@ -137,6 +137,8 @@ const HomePage = () => {
               <img
                 src={data.profilePicture}
                 alt={data.name}
+                fetchpriority="high"
+                loading="eager"
                 style={{
                   width: '100%',
                   height: '100%',
@@ -334,7 +336,12 @@ const HomePage = () => {
                                 <div className="wc-images">
                                   {project.images.map((src, idx) => (
                                     <div key={idx} className={imgClass(idx)}>
-                                      <img src={src} alt={`${project.company} screenshot ${idx + 1}`} />
+                                      <img 
+                                        src={src} 
+                                        alt={`${project.company} screenshot ${idx + 1}`} 
+                                        loading="lazy"
+                                        decoding="async"
+                                      />
                                     </div>
                                   ))}
                                 </div>

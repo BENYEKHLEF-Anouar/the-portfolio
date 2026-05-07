@@ -71,7 +71,7 @@ const PhotoItem = ({ card, index, cards, moveToEnd }) => {
         zIndex: 100
       }}
     >
-      <img src={card.img || card.url} alt={card.caption} />
+      <img src={card.img || card.url} alt={card.caption} loading="lazy" decoding="async" />
       <div className="photo-caption">{card.caption}</div>
     </motion.div>
   );
@@ -202,7 +202,7 @@ const AboutPage = () => {
               <div key={i} className="exp-row">
                 <div className={`exp-col-logo ${exp.company?.includes('Solicode') ? 'full-fill' : ''}`}>
                   {exp.logo ? (
-                    <img src={exp.logo} alt={exp.company} />
+                    <img src={exp.logo} alt={exp.company} loading="lazy" decoding="async" />
                   ) : (
                     <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>🏢</div>
                   )}

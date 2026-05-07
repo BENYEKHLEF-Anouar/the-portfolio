@@ -247,7 +247,12 @@ const ProjectDetailPage = () => {
                 </div>
                 {(project.detailImages || project.images) && (project.detailImages || project.images)[i] && (
                   <div className="pd-image-large">
-                    <img src={(project.detailImages || project.images)[i]} alt={section.title} />
+                    <img 
+                      src={(project.detailImages || project.images)[i]} 
+                      alt={section.title} 
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div>
                 )}
               </motion.div>
