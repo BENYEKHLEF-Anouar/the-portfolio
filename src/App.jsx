@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import HomePage from './pages/HomePage.jsx';
@@ -161,6 +162,7 @@ function App() {
         </AnimatePresence>
       </main>
       <Footer className={isAboutPage || isProjectDetail ? 'footer-about-page' : ''} />
+      <Analytics />
     </LanguageProvider>
   );
 }
