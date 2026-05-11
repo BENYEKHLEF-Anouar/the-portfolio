@@ -324,6 +324,10 @@ const HomePage = () => {
                                 '--card-bg-hover': project.cardBgHover
                               }}
                             >
+                              <div className="wc-arrow">
+                                <ArrowUpRight size={16} strokeWidth={1.5} />
+                              </div>
+
                               <div className="wc-meta">
                                 <span className="wc-category">{project.category}</span>
                                 <span className="wc-sep">·</span>
