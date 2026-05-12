@@ -76,12 +76,6 @@ const ProjectDetailPage = () => {
         <Link
           to="/"
           className="pd-return"
-          onClick={(e) => {
-            if (window.history.length > 1) {
-              e.preventDefault();
-              navigate(-1);
-            }
-          }}
         >
           <ArrowLeft size={16} strokeWidth={1.5} />
           <span>{t.allWork}</span>
