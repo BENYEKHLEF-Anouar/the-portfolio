@@ -4,9 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 import HomePage from './pages/HomePage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import ProjectDetailPage from './pages/ProjectDetailPage.jsx';
+import ErrorPage from './pages/ErrorPage.jsx';
 import { LanguageProvider } from './i18n/LanguageContext.jsx';
 
 const scrollState = { shouldScroll: false, y: 0 };
@@ -80,24 +82,19 @@ const ScrollToHash = () => {
 const PageWrapper = ({ children, type }) => {
   const isProject = type === 'project';
 
-  // Editorial Glide: Lightweight, lag-free page transition
-  const variants = {
-    initial: {
-      opacity: 0,
-      y: 15,
-    },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transitionEnd: {
-        transform: ''
+  const variants = isProject
+    ? {
+        // Project pages: pure fade — the hero content has its own enter animations
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit:    { opacity: 0 },
       }
-    },
-    exit: {
-      opacity: 0,
-      y: -15,
-    }
-  };
+    : {
+        // Standard pages: gentle vertical glide
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0 },
+        exit:    { opacity: 0, y: -8 },
+      };
 
   return (
     <motion.div
@@ -105,11 +102,10 @@ const PageWrapper = ({ children, type }) => {
       animate="animate"
       exit="exit"
       variants={variants}
-      transition={{ 
-        duration: isProject ? 0.9 : 0.6, 
-        ease: [0.16, 1, 0.3, 1] 
+      transition={{
+        duration: isProject ? 0.4 : 0.45,
+        ease: [0.16, 1, 0.3, 1]
       }}
-      style={{ transformOrigin: 'top center' }}
     >
       {children}
     </motion.div>
@@ -120,48 +116,57 @@ function App() {
   const location = useLocation();
   const isAboutPage = location.pathname === '/about';
   const isProjectDetail = location.pathname.startsWith('/work/') && location.pathname.length > 6;
+  const isHome = location.pathname === '/';
+
+  // Determine if we're on a known route. If not, it's a 404/Error page.
+  const isKnownRoute = isHome || isAboutPage || isProjectDetail;
+  const isErrorPage = !isKnownRoute;
 
   return (
     <LanguageProvider>
       <ScrollToHash />
-      <main>
-        <AnimatePresence 
-          mode="wait"
-          onExitComplete={() => {
-            if (scrollState.shouldScroll) {
-              if (scrollState.hash) {
-                // Defer slightly to ensure DOM has painted the element
-                setTimeout(() => {
-                  const element = document.getElementById(scrollState.hash);
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'auto' });
-                  }
-                }, 50);
-              } else {
-                const targetY = scrollState.y;
-                // Fire immediately
-                window.scrollTo(0, targetY);
-                // And fire across multiple frames to guarantee exact positioning after React's paint cycle
-                requestAnimationFrame(() => {
+      <ErrorBoundary>
+        <main>
+          <AnimatePresence
+            mode="wait"
+            onExitComplete={() => {
+              if (scrollState.shouldScroll) {
+                if (scrollState.hash) {
+                  // Defer slightly to ensure DOM has painted the element
+                  setTimeout(() => {
+                    const element = document.getElementById(scrollState.hash);
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'auto' });
+                    }
+                  }, 50);
+                } else {
+                  const targetY = scrollState.y;
+                  // Fire immediately
                   window.scrollTo(0, targetY);
-                  setTimeout(() => window.scrollTo(0, targetY), 10);
-                  setTimeout(() => window.scrollTo(0, targetY), 50);
-                  setTimeout(() => window.scrollTo(0, targetY), 100);
-                });
+                  // And fire across multiple frames to guarantee exact positioning after React's paint cycle
+                  requestAnimationFrame(() => {
+                    window.scrollTo(0, targetY);
+                    setTimeout(() => window.scrollTo(0, targetY), 10);
+                    setTimeout(() => window.scrollTo(0, targetY), 50);
+                    setTimeout(() => window.scrollTo(0, targetY), 100);
+                  });
+                }
+                scrollState.shouldScroll = false;
               }
-              scrollState.shouldScroll = false;
-            }
-          }}
-        >
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<PageWrapper type="home"><HomePage /></PageWrapper>} />
-            <Route path="/about" element={<PageWrapper type="about"><AboutPage /></PageWrapper>} />
-            <Route path="/work/:id" element={<PageWrapper type="project"><ProjectDetailPage /></PageWrapper>} />
-            <Route path="*" element={<PageWrapper type="home"><HomePage /></PageWrapper>} />
-          </Routes>
-        </AnimatePresence>
-      </main>
-      <Footer className={isAboutPage || isProjectDetail ? 'footer-about-page' : ''} />
+            }}
+          >
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<PageWrapper type="home"><HomePage /></PageWrapper>} />
+              <Route path="/about" element={<PageWrapper type="about"><AboutPage /></PageWrapper>} />
+              <Route path="/work/:id" element={<PageWrapper type="project"><ProjectDetailPage /></PageWrapper>} />
+              <Route path="*" element={<PageWrapper type="error"><ErrorPage code={404} /></PageWrapper>} />
+            </Routes>
+          </AnimatePresence>
+        </main>
+        {!isErrorPage && (
+          <Footer className={isAboutPage || isProjectDetail ? 'footer-about-page' : ''} />
+        )}
+      </ErrorBoundary>
       <Analytics />
     </LanguageProvider>
   );

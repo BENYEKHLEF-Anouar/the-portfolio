@@ -111,7 +111,7 @@ const HomePage = () => {
       {/* ── Hero Section ──────────────────────────────── */}
       <section
         className="hero-section"
-        style={{ padding: '50px 0 100px' }}
+        style={{ padding: '40px 0 100px' }}
       >
         <div className="page-container-wide">
           <div
@@ -137,7 +137,7 @@ const HomePage = () => {
               <img
                 src={data.profilePicture}
                 alt={data.name}
-                fetchpriority="high"
+                fetchPriority="high"
                 loading="eager"
                 style={{
                   width: '100%',
@@ -340,9 +340,9 @@ const HomePage = () => {
                                 <div className="wc-images">
                                   {project.images.map((src, idx) => (
                                     <div key={idx} className={imgClass(idx)}>
-                                      <img 
-                                        src={src} 
-                                        alt={`${project.company} screenshot ${idx + 1}`} 
+                                      <img
+                                        src={src}
+                                        alt={`${project.company} screenshot ${idx + 1}`}
                                         loading="lazy"
                                         decoding="async"
                                       />
@@ -488,16 +488,15 @@ const HomePage = () => {
       <AnimatePresence>
         {showScrollTop && (
           <motion.button
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            whileHover={{ y: -4 }}
-            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
             onClick={scrollToTop}
-            className="scroll-top-btn"
-            aria-label="Scroll to top"
+            className="pd-side-btn pd-side-btn--scroll floating-bottom"
+            title="Scroll to Top"
           >
-            <ArrowUp size={18} strokeWidth={2} />
+            <span className="pd-side-btn-label">Back to Top</span>
+            <div className="pd-side-btn-icon"><ArrowUp size={16} strokeWidth={2.5} /></div>
           </motion.button>
         )}
       </AnimatePresence>

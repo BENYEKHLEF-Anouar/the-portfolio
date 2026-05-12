@@ -63,7 +63,7 @@ export const translations = {
     },
     footer: {
       rights: 'All rights reserved.',
-      available: 'Available for new projects',
+      status: 'Available for new projects',
       location: 'Tangier, Morocco',
     },
     contact: {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { MapPin } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { translations } from '../i18n/translations.js';
 
@@ -16,10 +17,11 @@ const Footer = ({ className }) => {
           </span>
           
           <div className="footer-meta">
-            <div className="footer-status">
+            {/* <div className="footer-status">
               {t.status}
-            </div>
-            <div className="footer-meta-item">
+            </div> */}
+            <div className="footer-meta-item" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <MapPin size={12} strokeWidth={1.5} />
               {data.location}
             </div>
           </div>

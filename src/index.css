@@ -113,8 +113,13 @@ body::-webkit-scrollbar {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .accent-dot::after {
@@ -568,12 +573,11 @@ body::-webkit-scrollbar {
 }
 
 .pd-hero {
-  min-height: 40vh;
+  min-height: 45vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 100px 0 0 0;
-  /* Bottom padding removed for flush image */
+  padding: 130px 0 70px 0;
   position: relative;
   transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
@@ -848,9 +852,8 @@ body::-webkit-scrollbar {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 40px;
-  margin-bottom: 40px;
-  /* Increased space below the title */
+  gap: 60px;
+  margin-bottom: 60px;
 }
 
 .pd-hero-text-wrap {
@@ -944,6 +947,18 @@ body::-webkit-scrollbar {
 
 .pd-live-button:hover {
   opacity: 0.7;
+}
+
+
+
+
+@media (max-width: 768px) {
+  .scroll-top-btn {
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+  }
 }
 
 /* ─── Scroll to Top Button ────────────────────── */
@@ -2077,6 +2092,11 @@ body::-webkit-scrollbar {
   background: #E85D2F;
   border-radius: 50%;
   box-shadow: 0 0 0 2px rgba(232, 93, 47, 0.15);
+}
+
+.footer-sep {
+  color: #EBEBEB;
+  font-weight: 400;
 }
 
 /* ─── Immersive About Page ─────────────────────── */
@@ -3217,12 +3237,14 @@ body::-webkit-scrollbar {
   align-items: center;
   justify-content: center;
 }
+
 /* --- Contact Success Animation ----------------- */
 @keyframes ctaFadeScale {
   0% {
     opacity: 0;
     transform: translateY(10px) scale(0.98);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -3264,11 +3286,12 @@ body::-webkit-scrollbar {
     opacity: 0;
     transform: scale(0.5) rotate(-20deg);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) rotate(0deg);
   }
-} 
+}
 
 .cta-success-title {
   animation: ctaFadeScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
@@ -3294,6 +3317,108 @@ img[src] {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Project Side Actions (Floating Sidebar) ── */
+.pd-side-actions {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+  padding-right: 20px;
+}
+
+.pd-side-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  text-decoration: none;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  border-radius: 100px;
+  color: #1A1A1A;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+  margin-left: auto;
+}
+
+.pd-side-btn-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.02em;
+}
+
+.pd-side-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.pd-side-btn:hover {
+  width: 160px;
+  background: #1A1A1A;
+  color: white;
+  border-color: #1A1A1A;
+  padding-left: 20px;
+  padding-right: 12px;
+}
+
+.pd-side-btn:hover .pd-side-btn-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.pd-side-btn--primary {
+  background: #1A1A1A;
+  color: white;
+  border-color: #1A1A1A;
+}
+
+.pd-side-btn--primary:hover {
+  background: #E85D2F;
+  border-color: #E85D2F;
+}
+
+.pd-side-btn--scroll {
+  background: white;
+}
+
+.floating-bottom {
+  position: fixed;
+  right: 20px;
+  bottom: 40px;
+  z-index: 9999;
+}
+
+@media (max-width: 1024px) {
+  .pd-side-actions, .pd-side-btn--scroll {
+    display: none !important;
+  }
 }
