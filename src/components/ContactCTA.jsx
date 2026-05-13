@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { translations } from '../i18n/translations.js';
 
@@ -165,121 +166,142 @@ const ContactCTA = () => {
 
           <div className="cta-divider" />
 
-          {/* ── Success state */}
-          {status === 'success' || status === 'error' ? (
-            <div className={`cta-success ${status === 'error' ? 'cta-error' : ''}`}>
-              <div className="cta-success-icon-wrap">
-                {status === 'success' ? (
-                  <CheckCircle size={26} strokeWidth={1.5} />
-                ) : (
-                  <AlertCircle size={26} strokeWidth={1.5} style={{ color: '#E85D2F' }} />
-                )}
-              </div>
-              <p className="cta-success-title">
-                {status === 'success' ? t.successTitle : t.errorTitle}
-              </p>
-              <p className="cta-success-body">
-                {status === 'success' ? t.successBody : t.errorBody}
-              </p>
-              
-              {status === 'success' && (
-                <>
-                  <div className="cta-countdown-bar-wrap">
-                    <div
-                      className="cta-countdown-bar"
-                      style={{ animationDuration: `${RESET_DELAY}ms` }}
-                    />
-                  </div>
-                  <p className="cta-countdown-label">
-                    {t.formResets.replace('{n}', countdown)}
-                  </p>
-                </>
-              )}
-            </div>
-          ) : (
-
-            /* ── Form */
-            <form className="cta-form" onSubmit={handleSubmit} noValidate>
-              <div className="cta-form-row">
-
-                {/* Name */}
-                <div className={fieldState('name')}>
-                  <label className="cta-label" htmlFor="cf-name">{t.nameLabel}</label>
-                  <input
-                    id="cf-name" name="name" type="text" autoComplete="name"
-                    className="cta-input"
-                    value={form.name}
-                    onChange={handleChange}
-                    onFocus={() => setFocused('name')}
-                    onBlur={handleBlur}
-                    placeholder={t.namePlaceholder}
-                  />
-                  {touched.name && errors.name && (
-                    <span className="cta-error-msg">
-                      <AlertCircle size={11} strokeWidth={2} /> {errors.name}
-                    </span>
-                  )}
-                </div>
-
-                {/* Email */}
-                <div className={fieldState('email')}>
-                  <label className="cta-label" htmlFor="cf-email">{t.emailLabel}</label>
-                  <input
-                    id="cf-email" name="email" type="email" autoComplete="email"
-                    className="cta-input"
-                    value={form.email}
-                    onChange={handleChange}
-                    onFocus={() => setFocused('email')}
-                    onBlur={handleBlur}
-                    placeholder={t.emailPlaceholder}
-                  />
-                  {touched.email && errors.email && (
-                    <span className="cta-error-msg">
-                      <AlertCircle size={11} strokeWidth={2} /> {errors.email}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Message */}
-              <div className={`${fieldState('message')} cta-field--full`}>
-                <label className="cta-label" htmlFor="cf-message">{t.messageLabel}</label>
-                <textarea
-                  id="cf-message" name="message"
-                  rows={5}
-                  className="cta-input cta-textarea"
-                  value={form.message}
-                  onChange={handleChange}
-                  onFocus={() => setFocused('message')}
-                  onBlur={handleBlur}
-                  placeholder={t.messagePlaceholder}
-                />
-                {touched.message && errors.message && (
-                  <span className="cta-error-msg">
-                    <AlertCircle size={11} strokeWidth={2} /> {errors.message}
-                  </span>
-                )}
-              </div>
-
-              {/* Submit */}
-              <div className="cta-form-footer">
-                <button 
-                  type="submit" 
-                  className="cta-send-btn"
-                  disabled={status === 'submitting'}
-                >
-                  <span>
-                    {status === 'submitting' ? t.sendingButton : t.sendButton}
-                  </span>
-                  {status === 'submitting' ? (
-                    <Loader2 size={14} strokeWidth={2} className="cta-spin" />
+          <AnimatePresence mode="wait">
+            {status === 'success' || status === 'error' ? (
+              <motion.div 
+                key="success"
+                className={`cta-success ${status === 'error' ? 'cta-error' : ''}`}
+                initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 1.02 }}
+                transition={{ 
+                  duration: 0.7, 
+                  ease: [0.23, 1, 0.32, 1] 
+                }}
+              >
+                <div className="cta-success-icon-wrap">
+                  {status === 'success' ? (
+                    <CheckCircle size={26} strokeWidth={1.5} />
                   ) : (
-                    <Send size={14} strokeWidth={2} />
+                    <AlertCircle size={26} strokeWidth={1.5} style={{ color: '#E85D2F' }} />
                   )}
-                </button>
-              </div>
-            </form>
-          )}
+                </div>
+                <p className="cta-success-title">
+                  {status === 'success' ? t.successTitle : t.errorTitle}
+                </p>
+                <p className="cta-success-body">
+                  {status === 'success' ? t.successBody : t.errorBody}
+                </p>
+                
+                {status === 'success' && (
+                  <>
+                    <div className="cta-countdown-bar-wrap">
+                      <div
+                        className="cta-countdown-bar"
+                        style={{ animationDuration: `${RESET_DELAY}ms` }}
+                      />
+                    </div>
+                    <p className="cta-countdown-label">
+                      {t.formResets.replace('{n}', countdown)}
+                    </p>
+                  </>
+                )}
+              </motion.div>
+            ) : (
+              <motion.form 
+                key="form"
+                className="cta-form" 
+                onSubmit={handleSubmit} 
+                noValidate
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ 
+                  duration: 0.6, 
+                  ease: [0.23, 1, 0.32, 1] 
+                }}
+              >
+                <div className="cta-form-row">
+
+                  {/* Name */}
+                  <div className={fieldState('name')}>
+                    <label className="cta-label" htmlFor="cf-name">{t.nameLabel}</label>
+                    <input
+                      id="cf-name" name="name" type="text" autoComplete="name"
+                      className="cta-input"
+                      value={form.name}
+                      onChange={handleChange}
+                      onFocus={() => setFocused('name')}
+                      onBlur={handleBlur}
+                      placeholder={t.namePlaceholder}
+                    />
+                    {touched.name && errors.name && (
+                      <span className="cta-error-msg">
+                        <AlertCircle size={11} strokeWidth={2} /> {errors.name}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Email */}
+                  <div className={fieldState('email')}>
+                    <label className="cta-label" htmlFor="cf-email">{t.emailLabel}</label>
+                    <input
+                      id="cf-email" name="email" type="email" autoComplete="email"
+                      className="cta-input"
+                      value={form.email}
+                      onChange={handleChange}
+                      onFocus={() => setFocused('email')}
+                      onBlur={handleBlur}
+                      placeholder={t.emailPlaceholder}
+                    />
+                    {touched.email && errors.email && (
+                      <span className="cta-error-msg">
+                        <AlertCircle size={11} strokeWidth={2} /> {errors.email}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Message */}
+                <div className={`${fieldState('message')} cta-field--full`}>
+                  <label className="cta-label" htmlFor="cf-message">{t.messageLabel}</label>
+                  <textarea
+                    id="cf-message" name="message"
+                    rows={5}
+                    className="cta-input cta-textarea"
+                    value={form.message}
+                    onChange={handleChange}
+                    onFocus={() => setFocused('message')}
+                    onBlur={handleBlur}
+                    placeholder={t.messagePlaceholder}
+                  />
+                  {touched.message && errors.message && (
+                    <span className="cta-error-msg">
+                      <AlertCircle size={11} strokeWidth={2} /> {errors.message}
+                    </span>
+                  )}
+                </div>
+
+                {/* Submit */}
+                <div className="cta-form-footer">
+                  <button 
+                    type="submit" 
+                    className="cta-send-btn"
+                    disabled={status === 'submitting'}
+                  >
+                    <span>
+                      {status === 'submitting' ? t.sendingButton : t.sendButton}
+                    </span>
+                    {status === 'submitting' ? (
+                      <Loader2 size={14} strokeWidth={2} className="cta-spin" />
+                    ) : (
+                      <Send size={14} strokeWidth={2} />
+                    )}
+                  </button>
+                </div>
+              </motion.form>
+            )}
+          </AnimatePresence>
 
         </div>
       </div>

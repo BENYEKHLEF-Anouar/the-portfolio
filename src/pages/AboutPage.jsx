@@ -119,10 +119,10 @@ const AboutPage = () => {
       <Link
         to="/"
         className="about-close-btn"
-        style={{ 
-          background: 'rgba(0,0,0,0.03)', 
-          borderRadius: '50%', 
-          width: '44px', 
+        style={{
+          background: 'rgba(0,0,0,0.03)',
+          borderRadius: '50%',
+          width: '44px',
           height: '44px',
           display: 'flex',
           alignItems: 'center',
@@ -185,7 +185,7 @@ const AboutPage = () => {
 
         </div>
 
-        <motion.section 
+        <motion.section
           className="about-experience-section"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -196,7 +196,7 @@ const AboutPage = () => {
             <h2>{t.experienceTitle}</h2>
             <p>{t.experienceDesc}</p>
           </div>
-          
+
           <div className="exp-main-list">
             {data.experience.map((exp, i) => (
               <div key={i} className="exp-row">
@@ -219,7 +219,7 @@ const AboutPage = () => {
           </div>
         </motion.section>
 
-        <motion.section 
+        <motion.section
           className="about-contact-section"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
