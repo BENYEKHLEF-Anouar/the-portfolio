@@ -119,32 +119,14 @@ const ErrorPage = ({ code = 404, isReset = false, onReset }) => {
       />
 
       <motion.div
-        className="page-container-wide"
+        className="page-container-wide error-page-wrapper"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-          paddingTop: 'clamp(100px, 18vh, 180px)',
-          paddingBottom: 80,
-        }}
       >
         {/* ── Error code (huge display) ── */}
-        <motion.div variants={itemVariants} style={{ marginBottom: 32 }}>
-          <span
-            style={{
-              fontFamily: '"Plus Jakarta Sans", sans-serif',
-              fontSize: 'clamp(6rem, 18vw, 14rem)',
-              fontWeight: 700,
-              lineHeight: 0.9,
-              letterSpacing: '-0.06em',
-              color: '#E85D2F',
-              display: 'block',
-              userSelect: 'none',
-            }}
-          >
+        <motion.div variants={itemVariants}>
+          <span className="error-page-code">
             {meta.code}
           </span>
         </motion.div>
@@ -152,12 +134,7 @@ const ErrorPage = ({ code = 404, isReset = false, onReset }) => {
         {/* ── Divider ── */}
         <motion.hr
           variants={itemVariants}
-          style={{
-            border: 'none',
-            borderTop: '1px solid #E4E4DC',
-            marginBottom: 40,
-            maxWidth: 540,
-          }}
+          className="error-page-divider"
         />
 
         {/* ── Label + title ── */}
@@ -175,18 +152,7 @@ const ErrorPage = ({ code = 404, isReset = false, onReset }) => {
           >
             {meta.label}
           </span>
-          <h1
-            style={{
-              fontFamily: '"Plus Jakarta Sans", sans-serif',
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              fontWeight: 400,
-              lineHeight: 1.05,
-              letterSpacing: '-0.03em',
-              color: '#111111',
-              margin: 0,
-              maxWidth: 540,
-            }}
-          >
+          <h1 className="error-page-title">
             {meta.title}
           </h1>
         </motion.div>
@@ -194,22 +160,14 @@ const ErrorPage = ({ code = 404, isReset = false, onReset }) => {
         {/* ── Description ── */}
         <motion.p
           variants={itemVariants}
-          style={{
-            fontFamily: '"Plus Jakarta Sans", sans-serif',
-            fontSize: '1rem',
-            lineHeight: 1.65,
-            color: '#555555',
-            maxWidth: 480,
-            margin: '0 0 48px',
-          }}
+          className="error-page-desc"
         >
           {meta.description}
         </motion.p>
 
-        {/* ── Action buttons ── */}
         <motion.div
           variants={itemVariants}
-          style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}
+          className="error-page-actions"
         >
           <Link
             to="/"
@@ -292,13 +250,7 @@ const ErrorPage = ({ code = 404, isReset = false, onReset }) => {
         {/* ── Bottom status hint ── */}
         <motion.div
           variants={itemVariants}
-          style={{
-            marginTop: 'auto',
-            paddingTop: 80,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-          }}
+          className="error-page-status"
         >
           <span
             style={{

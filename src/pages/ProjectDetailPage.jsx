@@ -7,7 +7,9 @@ import {
   ArrowUp, 
   ChevronRight,
   Cpu,
-  ArrowUpRight
+  ArrowUpRight,
+  List,
+  X
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { translations } from '../i18n/translations';
@@ -18,8 +20,11 @@ const ProjectDetailPage = () => {
   const { id } = useParams();
   const { language, data } = useLanguage();
   const t = translations[language].project;
+  const tCommon = translations[language].common;
   const [activeSection, setActiveSection] = React.useState('overview');
   const [showScrollTop, setShowScrollTop] = React.useState(false);
+  const [hideSideActions, setHideSideActions] = React.useState(false);
+  const [isSummaryOpen, setIsSummaryOpen] = React.useState(false);
 
   const project = data.work.find(p => p.id === id);
 
@@ -49,7 +54,13 @@ const ProjectDetailPage = () => {
     }, 100);
 
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      setShowScrollTop(scrollY > 400);
+      // Hide side actions when reaching the contact section at the bottom
+      setHideSideActions(scrollY + windowHeight > documentHeight - 700);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
@@ -58,6 +69,20 @@ const ProjectDetailPage = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [id, project]);
+
+  useEffect(() => {
+    if (isSummaryOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('summary-open');
+    } else {
+      document.body.style.overflow = '';
+      document.body.classList.remove('summary-open');
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.classList.remove('summary-open');
+    };
+  }, [isSummaryOpen]);
 
   if (!project) return <Navigate to="/work" replace />;
 
@@ -122,6 +147,7 @@ const ProjectDetailPage = () => {
                   </React.Fragment>
                 ))}
               </h1>
+
             </motion.div>
 
             <motion.div 
@@ -129,20 +155,18 @@ const ProjectDetailPage = () => {
               initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '24px' }}
             >
               {project.logo && (
                 <img 
                   src={project.logo} 
                   alt={`${project.company} Logo`} 
+                  className="pd-hero-logo"
                   style={{ 
                     height: project.id === 'warden' ? '55px' : '90px',
-                    width: 'auto',
-                    objectFit: 'contain'
                   }}
                 />
               )}
-              <div style={{ textAlign: 'right' }}>
+              <div className="pd-hero-side-text">
                 <p className="pd-meta-label">{t.selectedProject}</p>
                 <p className="pd-meta-value" style={{ fontSize: '18px' }}>{project.year}</p>
               </div>
@@ -272,28 +296,105 @@ const ProjectDetailPage = () => {
       <ContactCTA />
 
       {/* ── Fixed Side Actions ───────────────────────── */}
-      <div className="pd-side-actions">
-        {project.github !== '#' && (
-          <a href={project.github} target="_blank" rel="noopener noreferrer" className="pd-side-btn">
-            <span className="pd-side-btn-label">GitHub</span>
-            <div className="pd-side-btn-icon">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-              </svg>
-            </div>
-          </a>
+      <AnimatePresence>
+        {!hideSideActions && (
+          <motion.div 
+            className="pd-side-actions"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {project.github !== '#' && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="pd-side-btn">
+                <span className="pd-side-btn-label">GitHub</span>
+                <div className="pd-side-btn-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                  </svg>
+                </div>
+              </a>
+            )}
+            {project.link !== '#' && (
+              <a href={project.link} target="_blank" rel="noopener noreferrer" className="pd-side-btn pd-side-btn--primary">
+                <span className="pd-side-btn-label">Visit Site</span>
+                <div className="pd-side-btn-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                  </svg>
+                </div>
+              </a>
+            )}
+            <button 
+              onClick={() => setIsSummaryOpen(true)} 
+              className="pd-side-btn pd-side-btn--summary"
+            >
+              <span className="pd-side-btn-label">Summary</span>
+              <div className="pd-side-btn-icon">
+                <List size={16} />
+              </div>
+            </button>
+          </motion.div>
         )}
-        {project.link !== '#' && (
-          <a href={project.link} target="_blank" rel="noopener noreferrer" className="pd-side-btn pd-side-btn--primary">
-            <span className="pd-side-btn-label">Visit Site</span>
-            <div className="pd-side-btn-icon">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-              </svg>
-            </div>
-          </a>
+      </AnimatePresence>
+
+      {/* ── Mobile Summary Overlay ───────────────────── */}
+      <AnimatePresence>
+        {isSummaryOpen && (
+          <>
+            <motion.div 
+              className="pd-mobile-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsSummaryOpen(false)}
+            />
+            <motion.div 
+              className="pd-mobile-summary-panel"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            >
+              <div className="pd-mobile-summary-header">
+                <p className="pd-meta-label">{t.onThisPage}</p>
+                <button onClick={() => setIsSummaryOpen(false)} className="pd-mobile-close">
+                  <X size={20} />
+                </button>
+              </div>
+              <nav className="pd-mobile-nav">
+                <a 
+                  href="#overview" 
+                  className={`pd-mobile-nav-link ${activeSection === 'overview' ? 'active' : ''}`}
+                  onClick={() => setIsSummaryOpen(false)}
+                >
+                  <span className="pd-nav-num">01</span>
+                  <span className="pd-nav-text">{t.overview}</span>
+                </a>
+                {project.sections && project.sections.map((section, i) => (
+                  <a 
+                    key={i} 
+                    href={`#section-${i}`} 
+                    className={`pd-mobile-nav-link ${activeSection === `section-${i}` ? 'active' : ''}`}
+                    onClick={() => setIsSummaryOpen(false)}
+                  >
+                    <span className="pd-nav-num">0{i + 2}</span>
+                    <span className="pd-nav-text">{section.title}</span>
+                  </a>
+                ))}
+                <a
+                  href="#specs"
+                  className={`pd-mobile-nav-link ${activeSection === 'specs' ? 'active' : ''}`}
+                  onClick={() => setIsSummaryOpen(false)}
+                >
+                  <span className="pd-nav-num">0{(project.sections?.length || 0) + 2}</span>
+                  <span className="pd-nav-text">{t.specs}</span>
+                </a>
+              </nav>
+            </motion.div>
+          </>
         )}
-      </div>
+      </AnimatePresence>
 
       <AnimatePresence>
         {showScrollTop && (
@@ -304,7 +405,7 @@ const ProjectDetailPage = () => {
             onClick={scrollToTop}
             className="pd-side-btn pd-side-btn--scroll floating-bottom"
           >
-            <span className="pd-side-btn-label">Back to Top</span>
+            <span className="pd-side-btn-label">{tCommon.backToTop}</span>
             <div className="pd-side-btn-icon"><ArrowUp size={16} strokeWidth={2.5} /></div>
           </motion.button>
         )}

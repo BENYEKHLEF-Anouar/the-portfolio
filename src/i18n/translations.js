@@ -1,5 +1,8 @@
 export const translations = {
   en: {
+    common: {
+      backToTop: 'Back to Top',
+    },
     nav: {
       about: 'About',
       work: 'Work',
@@ -93,6 +96,9 @@ export const translations = {
     },
   },
   fr: {
+    common: {
+      backToTop: 'Retour en haut',
+    },
     nav: {
       about: 'À propos',
       work: 'Projets',

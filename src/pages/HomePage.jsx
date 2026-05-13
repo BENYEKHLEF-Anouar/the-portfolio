@@ -15,6 +15,7 @@ import Navbar from '../components/Navbar.jsx';
 const HomePage = () => {
   const { language, data } = useLanguage();
   const t = translations[language].home;
+  const tCommon = translations[language].common;
 
   const [weather, setWeather] = useState(null);
   const [currentTime, setCurrentTime] = useState('');
@@ -493,9 +494,9 @@ const HomePage = () => {
             exit={{ opacity: 0, x: 20 }}
             onClick={scrollToTop}
             className="pd-side-btn pd-side-btn--scroll floating-bottom"
-            title="Scroll to Top"
+            title={tCommon.backToTop}
           >
-            <span className="pd-side-btn-label">Back to Top</span>
+            <span className="pd-side-btn-label">{tCommon.backToTop}</span>
             <div className="pd-side-btn-icon"><ArrowUp size={16} strokeWidth={2.5} /></div>
           </motion.button>
         )}
